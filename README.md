@@ -1,31 +1,30 @@
-# Tinify
+[<img src="https://travis-ci.org/TinyPNG/tinify-ruby.svg?branch=master" alt="Build Status">](https://travis-ci.org/TinyPNG/tinify-ruby)
 
-TODO: Write a gem description
+# Tinify API client for Ruby
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Install the API client:
 
-```ruby
-gem 'tinify'
+```
+gem install tinify
 ```
 
-And then execute:
+Or add this line to your application's Gemfile:
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install tinify
+```ruby
+gem "tinify"
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require "tinify"
+Tinify.key = "YOUR_API_KEY"
 
-## Contributing
+Tinify.from_file("unoptimized.png").to_file("optimized.png")
+```
 
-1. Fork it ( https://github.com/[my-github-username]/tinify/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+## License
+
+This software is licensed under the MIT License. [View the license](LICENSE).
