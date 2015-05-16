@@ -14,20 +14,20 @@ describe Tinify::Client do
       it "should issue request" do
         subject.request(:get, "/")
         assert_requested :get, "https://api:key@api.tinify.com",
-        headers: { "Authorization": "Basic " + ["api:key"].pack("m").chomp }
+        headers: { "Authorization" => "Basic " + ["api:key"].pack("m").chomp }
       end
 
       it "should issue request with json body" do
         subject.request(:get, "/", { hello: "world" })
         assert_requested :get, "https://api:key@api.tinify.com",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type" => "application/json" },
           body: '{"hello":"world"}'
       end
 
       it "should issue request with user agent" do
         subject.request(:get, "/")
         assert_requested :get, "https://api:key@api.tinify.com",
-          headers: { "User-Agent": "Tinify/#{Tinify::VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL}" }
+          headers: { "User-Agent" => "Tinify/#{Tinify::VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL}" }
       end
 
       describe "with app id" do
@@ -38,7 +38,7 @@ describe Tinify::Client do
         it "should issue request with user agent" do
           subject.request(:get, "/")
           assert_requested :get, "https://api:key@api.tinify.com",
-            headers: { "User-Agent": "Tinify/#{Tinify::VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL} Tests/0.1" }
+            headers: { "User-Agent" => "Tinify/#{Tinify::VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL} Tests/0.1" }
         end
       end
     end
