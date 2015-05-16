@@ -2,7 +2,7 @@ module Tinify
   class Image
     class << self
       def from_file(path)
-        from_buffer(File.binread(path))
+        from_buffer(File.open(path, "rb") { |file| file.read })
       end
 
       def from_buffer(string)
@@ -20,7 +20,7 @@ module Tinify
     end
 
     def to_file(path)
-      File.binwrite(path, to_buffer)
+      File.open(path, "wb") { |file| file.write(to_buffer) }
     end
 
     def to_buffer
