@@ -1,12 +1,14 @@
 language: ruby
-
 rvm:
-  - 1.9.2
-  - 1.9.3
-  - 2.0
-  - 2.1
-  - 2.2
-  - ruby-head
-  - jruby-19mode
-  - jruby-20mode
-  - rbx-2
+- 1.9.2
+- 1.9.3
+- 2.0
+- 2.1
+- 2.2
+- ruby-head
+- jruby-19mode
+- jruby-20mode
+- rbx-2
+notifications:
+  slack:
+    secure: udqUs5rLo5XXIM+PpqBDCTOEobzqnQs2Vq+eHOBaJggVSjfYrN6OYQAmZVBLIpysCJPcuZhZ64u93p2Zl+Yu9vJHXPnhFIBEmQlFybCjRIQtz1MMaeqZTMCO49avY+SCjBvXZV902PKJ8vVeeR2O3T5oj894JTejtAnXm5yEInNft3ODMsF+v3R5WFjD8cS+RWegZRotkbhQmQNrqCKxD7rZ3ufTyJuhpVnJPsUZVyaMJbWUWJRsessbl9nBxk3fFR74KXoURgEOv/OmbQD5AkVv1FkxGh0Y7wpn0aU9UOSmJZzzsXp/MaGNfZW7UwGx4iMtTa1YK+h+/fD3PNePfCPLZfvIvxnheIUn3Zrky9TDfK3KP9KHNuAtGdW3c5oxSCimRNTmx2MmsnbGO2sElR/u+Jxr+h0NO5xaBQBmHQeGKjv7VYv3Hexeac0I9lf6lQzmpk6XlstsPfht/Qwia/45RyEu2E8/s4OTFiKYgCBtpttkQ1VTvRowUPgHcuddldUKlI0j6CZlM2gpt9oLAQvzSmdlGX3j4Hpa6nCHILzW8vLoNHvMHTgjz6GU6RJwSj9JjIDkg1XCmq60EmQOKaacjEGXAG2plp0Fulm5THgU7WKnxC5PA+lrSgspmUFb8A0nmKG3tyuSOytVGBRAyu3FLEQih0xrPcZJ2rZ5T0s=
