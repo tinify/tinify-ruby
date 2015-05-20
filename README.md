@@ -1,4 +1,4 @@
-[<img src="https://travis-ci.org/TinyPNG/tinify-ruby.svg?branch=master" alt="Build Status">](https://travis-ci.org/TinyPNG/tinify-ruby)
+[<img src="https://travis-ci.org/tinify/tinify-ruby.svg?branch=master" alt="Build Status">](https://travis-ci.org/tinify/tinify-ruby)
 
 # Tinify API client for Ruby
 

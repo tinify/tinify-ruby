@@ -14,7 +14,7 @@ describe Tinify::Client do
       it "should issue request" do
         subject.request(:get, "/")
         assert_requested :get, "https://api:key@api.tinify.com",
-        headers: { "Authorization" => "Basic " + ["api:key"].pack("m").chomp }
+          headers: { "Authorization" => "Basic " + ["api:key"].pack("m").chomp }
       end
 
       it "should issue request with json body" do
