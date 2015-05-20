@@ -27,7 +27,7 @@ describe Tinify::Client do
       it "should issue request with user agent" do
         subject.request(:get, "/")
         assert_requested :get, "https://api:key@api.tinify.com",
-          headers: { "User-Agent" => "Tinify/#{Tinify::VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL}" }
+          headers: { "User-Agent" => Tinify::Client::USER_AGENT }
       end
 
       describe "with app id" do
