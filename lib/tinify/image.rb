@@ -11,12 +11,12 @@ module Tinify
       end
     end
 
-    def initialize(url, instructions = {})
-      @url, @instructions = url.freeze, instructions.freeze
+    def initialize(url, commands = {})
+      @url, @commands = url.freeze, commands.freeze
     end
 
     def resize(options)
-      self.class.new(@url, @instructions.merge(resize: options))
+      self.class.new(@url, @commands.merge(resize: options))
     end
 
     def to_file(path)
@@ -24,7 +24,7 @@ module Tinify
     end
 
     def to_buffer
-      Tinify.client.request(:get, @url, @instructions).body
+      Tinify.client.request(:get, @url, @commands).body
     end
   end
 end

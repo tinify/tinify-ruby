@@ -32,13 +32,13 @@ describe Tinify::Client do
 
       describe "with app id" do
         subject do
-          Tinify::Client.new("key", "Tests/0.1")
+          Tinify::Client.new("key", "TestApp/0.1")
         end
 
         it "should issue request with user agent" do
           subject.request(:get, "/")
           assert_requested :get, "https://api:key@api.tinify.com",
-            headers: { "User-Agent" => "Tinify/#{Tinify::VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL} Tests/0.1" }
+            headers: { "User-Agent" => "#{Tinify::Client::USER_AGENT} TestApp/0.1" }
         end
       end
     end
