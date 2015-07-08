@@ -8,7 +8,10 @@ describe Tinify::Client do
   describe "request" do
     describe "when valid" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(status: 200)
+        stub_request(:get, "https://api:key@api.tinify.com").to_return(
+          status: 200,
+          headers: { "Compression-Count" => "12" }
+        )
       end
 
       it "should issue request" do
@@ -28,6 +31,11 @@ describe Tinify::Client do
         subject.request(:get, "/")
         assert_requested :get, "https://api:key@api.tinify.com",
           headers: { "User-Agent" => Tinify::Client::USER_AGENT }
+      end
+
+      it "should update compression count" do
+        subject.request(:get, "/")
+        assert_equal 12, Tinify.compression_count
       end
 
       describe "with app id" do

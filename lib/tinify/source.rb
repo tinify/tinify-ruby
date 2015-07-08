@@ -1,5 +1,5 @@
 module Tinify
-  class Image
+  class Source
     class << self
       def from_file(path)
         from_buffer(File.open(path, "rb") { |file| file.read })
@@ -19,12 +19,22 @@ module Tinify
       self.class.new(@url, @commands.merge(resize: options))
     end
 
+    def store(options)
+      response = Tinify.client.request(:post, @url, @commands.merge(store: options))
+      Result.new(response.headers, response.body).freeze
+    end
+
+    def result
+      response = Tinify.client.request(:get, @url, @commands)
+      Result.new(response.headers, response.body).freeze
+    end
+
     def to_file(path)
-      File.open(path, "wb") { |file| file.write(to_buffer) }
+      result.to_file(path)
     end
 
     def to_buffer
-      Tinify.client.request(:get, @url, @commands).body
+      result.to_buffer
     end
   end
 end

@@ -1,8 +1,6 @@
 require "httpclient"
 require "json"
 
-require "tinify/error"
-
 module Tinify
   class Client
     API_ENDPOINT = "https://api.tinify.com".freeze
@@ -33,6 +31,10 @@ module Tinify
         raise ConnectionError.new("Timeout while connecting")
       rescue StandardError => err
         raise ConnectionError.new("Error while connecting: #{err.message}")
+      end
+
+      if count = response.headers["Compression-Count"]
+        Tinify.compression_count = count.to_i
       end
 
       if response.ok?
