@@ -23,7 +23,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.7)
-  minitest
+  minitest (~> 5.5)
   rake (~> 10.0)
   tinify!
-  webmock
+  webmock (~> 1.20)
