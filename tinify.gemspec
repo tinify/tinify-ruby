@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "tinify"
   spec.version       = Tinify::VERSION
   spec.summary       = "Ruby client for the Tinify API."
-  spec.description   = "Tinify compresses your images intelligently. Read more at https://tinify.com."
+  spec.description   = "Ruby client for the Tinify API. Tinify compresses your images intelligently. Read more at https://tinify.com."
   spec.authors       = ["Rolf Timmermans"]
   spec.email         = ["rolftimmermans@voormedia.com"]
   spec.homepage      = "https://tinify.com/developers"
