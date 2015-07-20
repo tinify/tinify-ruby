@@ -5,7 +5,7 @@ require "tinify"
 
 module TestHelpers
   def before_setup
-    Tinify.reset!
+    Tinify.key = nil
     super
   end
 

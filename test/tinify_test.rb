@@ -18,14 +18,6 @@ describe Tinify do
     end
   end
 
-  describe "reset" do
-    it "should reset key" do
-      Tinify.key = "abcde"
-      Tinify.reset!
-      assert_equal nil, Tinify.key
-    end
-  end
-
   describe "client" do
     describe "with key" do
       it "should return client" do

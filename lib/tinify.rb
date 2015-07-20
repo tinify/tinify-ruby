@@ -32,11 +32,6 @@ module Tinify
       true
     end
 
-    def reset!
-      @key = nil
-      @client = nil
-    end
-
     @@mutex = Mutex.new
 
     def client
