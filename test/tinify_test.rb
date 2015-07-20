@@ -3,6 +3,21 @@ require File.expand_path("../helper", __FILE__)
 describe Tinify do
   dummy_file = File.expand_path("../examples/dummy.png", __FILE__)
 
+  describe "key" do
+    before do
+      stub_request(:get, "https://api:fghij@api.tinify.com").to_return(status: 200)
+    end
+
+    it "should reset client with new key" do
+      Tinify.key = "abcde"
+      Tinify.client
+      Tinify.key = "fghij"
+      Tinify.client.request(:get, "/")
+      assert_requested :get, "https://api:fghij@api.tinify.com",
+        headers: { "Authorization" => "Basic " + ["api:fghij"].pack("m").chomp }
+    end
+  end
+
   describe "reset" do
     it "should reset key" do
       Tinify.key = "abcde"

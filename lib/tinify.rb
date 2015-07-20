@@ -13,6 +13,11 @@ module Tinify
     attr_accessor :app_identifier
     attr_accessor :compression_count
 
+    def key=(key)
+      @key = key
+      @client = nil
+    end
+
     def from_file(path)
       Source.from_file(path)
     end
