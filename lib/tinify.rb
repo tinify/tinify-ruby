@@ -2,6 +2,7 @@ require "tinify/version"
 require "tinify/error"
 
 require "tinify/client"
+require "tinify/result_meta"
 require "tinify/result"
 require "tinify/source"
 

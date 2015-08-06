@@ -21,7 +21,7 @@ module Tinify
 
     def store(options)
       response = Tinify.client.request(:post, @url, @commands.merge(store: options))
-      Result.new(response.headers, response.body).freeze
+      ResultMeta.new(response.headers).freeze
     end
 
     def result

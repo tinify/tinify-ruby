@@ -97,8 +97,8 @@ describe Tinify::Source do
     end
 
     describe "store" do
-      it "should return result" do
-        assert_kind_of Tinify::Result, Tinify::Source.from_buffer("png file").store(service: "s3")
+      it "should return result metadata" do
+        assert_kind_of Tinify::ResultMeta, Tinify::Source.from_buffer("png file").store(service: "s3")
       end
     end
 

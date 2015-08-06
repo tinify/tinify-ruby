@@ -23,6 +23,12 @@ describe Tinify::Result do
       end
     end
 
+    describe "location" do
+      it "should return nil" do
+        assert_nil subject.location
+      end
+    end
+
     describe "size" do
       it "should return content length" do
         assert_equal 450, subject.size

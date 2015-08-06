@@ -1,5 +1,5 @@
 module Tinify
-  class Result
+  class Result < ResultMeta
     attr_reader :data
 
     def initialize(meta, data)
@@ -11,14 +11,6 @@ module Tinify
     end
 
     alias_method :to_buffer, :data
-
-    def width
-      @meta["Image-Width"].to_i
-    end
-
-    def height
-      @meta["Image-Height"].to_i
-    end
 
     def size
       @meta["Content-Length"].to_i
