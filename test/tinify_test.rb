@@ -18,6 +18,22 @@ describe Tinify do
     end
   end
 
+  describe "app_identifier" do
+    before do
+      stub_request(:get, "https://api:abcde@api.tinify.com").to_return(status: 200)
+    end
+
+    it "should reset client with new app identifier" do
+      Tinify.key = "abcde"
+      Tinify.app_identifier = "MyApp/1.0"
+      Tinify.client
+      Tinify.app_identifier = "MyApp/2.0"
+      Tinify.client.request(:get, "/")
+      assert_requested :get, "https://api:abcde@api.tinify.com",
+        headers: { "User-Agent" => "#{Tinify::Client::USER_AGENT} MyApp/2.0" }
+    end
+  end
+
   describe "client" do
     describe "with key" do
       it "should return client" do

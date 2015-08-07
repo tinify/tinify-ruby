@@ -19,6 +19,11 @@ module Tinify
       @client = nil
     end
 
+    def app_identifier=(app_identifier)
+      @app_identifier = app_identifier
+      @client = nil
+    end
+
     def from_file(path)
       Source.from_file(path)
     end
