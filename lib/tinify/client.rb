@@ -4,7 +4,7 @@ require "json"
 module Tinify
   class Client
     API_ENDPOINT = "https://api.tinify.com".freeze
-    USER_AGENT = "Tinify/#{VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL}".freeze
+    USER_AGENT = "Tinify/#{VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{defined?(RUBY_ENGINE) ? RUBY_ENGINE : "unknown"})".freeze
     CA_BUNDLE = File.expand_path("../../data/cacert.pem", __FILE__).freeze
 
     def initialize(key, app_identifier = nil)
