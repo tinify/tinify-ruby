@@ -25,6 +25,13 @@ Tinify.key = "YOUR_API_KEY"
 Tinify.from_file("unoptimized.png").to_file("optimized.png")
 ```
 
+## Running tests
+
+```
+bundle install
+rake
+```
+
 ## License
 
 This software is licensed under the MIT License. [View the license](LICENSE).
