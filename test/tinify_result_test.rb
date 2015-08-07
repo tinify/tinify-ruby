@@ -41,9 +41,9 @@ describe Tinify::Result do
       end
     end
 
-    describe "data" do
+    describe "to_buffer" do
       it "should return image data" do
-        assert_equal "image data", subject.data
+        assert_equal "image data", subject.to_buffer
       end
     end
   end
