@@ -81,7 +81,7 @@ describe Tinify do
     end
 
     it "should return source" do
-      assert_kind_of Tinify::Source, Tinify::Source.from_buffer("png file")
+      assert_kind_of Tinify::Source, Tinify.from_buffer("png file")
     end
   end
 
@@ -97,7 +97,7 @@ describe Tinify do
     end
 
     it "should return source" do
-      assert_kind_of Tinify::Source, Tinify::Source.from_file(dummy_file)
+      assert_kind_of Tinify::Source, Tinify.from_file(dummy_file)
     end
   end
 end
