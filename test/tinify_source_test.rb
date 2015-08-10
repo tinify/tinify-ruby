@@ -97,8 +97,13 @@ describe Tinify::Source do
     end
 
     describe "store" do
-      it "should return result metadata" do
+      it "should return result meta" do
         assert_kind_of Tinify::ResultMeta, Tinify::Source.from_buffer("png file").store(service: "s3")
+      end
+
+      it "should return result meta with location" do
+        result = Tinify::Source.from_buffer("png file").store(service: "s3")
+        assert_equal "https://bucket.s3.amazonaws.com/example", result.location
       end
     end
 
