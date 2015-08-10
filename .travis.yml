@@ -24,3 +24,4 @@ deploy:
   on:
     tags: true
     repo: tinify/tinify-ruby
+    ruby: 2.2
