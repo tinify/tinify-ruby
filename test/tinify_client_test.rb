@@ -20,6 +20,11 @@ describe Tinify::Client do
           headers: { "Authorization" => "Basic " + ["api:key"].pack("m").chomp }
       end
 
+      it "should issue request without body when options are empty" do
+        subject.request(:get, "/", {})
+        assert_requested :get, "https://api:key@api.tinify.com", body: nil
+      end
+
       it "should issue request with json body" do
         subject.request(:get, "/", { hello: "world" })
         assert_requested :get, "https://api:key@api.tinify.com",
