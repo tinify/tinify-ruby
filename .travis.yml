@@ -9,6 +9,9 @@ rvm:
 - jruby-19mode
 - jruby-20mode
 - rbx-2
+matrix:
+  allow_failures:
+    - rvm: ruby-head
 notifications:
   email: false
   slack:
