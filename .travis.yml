@@ -11,7 +11,7 @@ rvm:
 - rbx-2
 matrix:
   allow_failures:
-    - rvm: ruby-head
+  - rvm: ruby-head
 notifications:
   email: false
   slack:
@@ -19,6 +19,6 @@ notifications:
 deploy:
   provider: rubygems
   api_key:
-    secure: S1l31kWuX5LsEkvbmmGsp8auaQItXRDY/h1kwuiEc0uC+KWIeloYqdx+8oXDyaX8AB1SDuOncv3B+gmNMXOzmZpbrGXuESSJApwpG4R6+n1ubZgpiy9EOXA4XbwhNQtwUZXkvLR1XSUtCFDq5c6vokfNpMMO2zHCj8PqVc7cJZBDybhflUxlRpmm6SIy7FK28E1/E5lUAJXNMfuS4C7qNUzlJ1OcB8+6Sxvnw3756wMPBkfqaMxvksmX+sK206yiAS+BbTmmzh8sOKXbcZJ9/d7XntGe63h2kS5A3ncSOHEJoRWk3+m2NIjkdse2rhpM/oEMazY3D7lfShzDbcJN9BukPceMiG4lImubsw9iYFkRaToaF5kDsZR+G9+O4pTmqJ++1RpDVHuIOQdCGMmSV2JJFflOhO04IjdYdr9eKnhDWYMoufFZuYhmOLl2Fh8zqcw+AlAItKLaPOTtBW007J3+/SjFsBtUkVCH/y86q0iUbGxJ7/XikwTzhFfqLWu5+441g/11E2WqoAVm34Oa1jkEiWx7DSJEExdTNG60HFkDue97953vZ8Qi01SBnvGt6R1pHdrzPx7IdiTGKbxzblHqvyAd4sdo9hI9kxKru92jrC5rDBYQJdxyspWMLWGtfMnYpNKcQ9d/lDk+L3A7okNYkrjtMG03zUubjgzdQYQ=
+    secure: LacsB7dgswcA1emeTiFU1UnyNNMfsJuMgYyQBtuWfi9PHtOIVwOuaSmO83pDZNaoYZ2bxk3dglPu4S38gEF2wtvsbdiOzyAZrVSMN0WRMPLOSoUvnHRvMPQyjwkOZqjWigRiJJs8yDsqV+FkaVUeHwWhDUU3WB2aOCBob9Je4Qbf5hMlLCGTncyUbYk/thYYf2OrM4DR1jFKr7/LNEjqoSeB68zFq3JbhXsuiK3KTuB1CZBIyCDviYgRBHlhfQV4r4AdITb0uNukLktwvXZQ0XBZCgy1PzNwN4xt8RfT/9ybCkpU5IvKxWsYnAzsi47umDKG/MiybIuYrOZaicpjWeJirYCa5+u3+ENH/0JmyS5E8CQnt1Tyzx7p31/dvpk+BSzc4gsmF+Px8qQrmCZrHr7Qq0LUyeXWQ0qBU7v9vVDZYyzM7hGxkYP6Iq2STmrFAhnl5nIbHkXvC4YjWdIt487+VdD4lLi9oBIPasqPGu/UBTJlGC1KF0ORtx00WwTzljuB9l/l2+Cjw2RbRv0QgnlLmvKYmaPrItItoLcVWjZzf0hva+iI1hSN5Qoyajl8TWRc5UnGBQjf4/EWD0FaK0DgyQ5XIklHnc3sierz/JsG0IWuNH9ZpC9LNgg7y+6FNvhi/3zkdmbGVwLtDn6AYaVnRAeBsBE8JdOm0znDCws=
   on:
     tags: true
