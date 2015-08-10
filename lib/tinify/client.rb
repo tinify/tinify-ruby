@@ -10,7 +10,7 @@ module Tinify
     def initialize(key, app_identifier = nil)
       @client = HTTPClient.new
       @client.base_url = API_ENDPOINT
-      @client.default_header = { user_agent: [USER_AGENT, app_identifier].compact.join(" ") }
+      @client.default_header = { "User-Agent" => [USER_AGENT, app_identifier].compact.join(" ") }
 
       @client.force_basic_auth = true
       @client.set_auth("/", "api", key)

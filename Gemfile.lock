@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tinify (0.9.0)
+    tinify (0.9.1)
       httpclient (~> 2.6)
 
 GEM
