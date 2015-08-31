@@ -2,6 +2,12 @@
 
 # Tinify API client for Ruby
 
+Ruby client for the Tinify API. Tinify compresses your images intelligently. Read more at https://tinify.com.
+
+## Documentation
+
+[Go to the documentation for the Ruby client](https://tinypng.com/developers/reference/ruby).
+
 ## Installation
 
 Install the API client:
