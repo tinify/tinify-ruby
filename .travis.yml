@@ -9,9 +9,15 @@ rvm:
 - jruby-19mode
 - jruby-20mode
 - rbx-2
+env:
+  global:
+  - secure: u2JnTDMbqgf0kP5vDywFP+lL0ON135Q4a4jXTS1J4K8Kp7qFe/yzyrtYSmDJux31U3Ob/U/ptwYLlFUYuwjwMgTb4ow35jms8d9RvLb6vIBH7Yw9Sf6eq3iJxHGNOjM2pTL9N5DHx4TTO2ov+vQ1PT/QY5P70LVrSKurgKFDjgIZKwnYbFSZtusHX0qTPPQ3FL+NDdcuDmxLxiGt294o+9pFrUAQUKVV4NAk+HUnLjpqKWFqD9pMEw/DYrX4g9RAmN5YWt0sE+CCMFEaKh6Ghrfcfxov9yDEcKDz2ELXNiot9526wwoNONA/zT9hNQXfxhIXfV/67JsJ9cmbZIgP9FLWd/ziRs/yjoTJRaSloifXtAXAft2PMiNx7dnB2C9FFnDzJuTTkJdQfdSEkcXkn0a1Hy5wUI6Ur9Vdjn/Jc5yAHF6Uc78ekgkXBIVxc/J9J9EjophlaCsZHQbgM2H+mADbRIAA/qV1WD9XTISxANP6N19Pt6xFW+wGDnfBBDqbzCO6vK9M+9fU2LW4N8177rtCEG7XkUVSllbJvq841MPqOi2k++B9LD2xAu6Db3ubV5KFL/wg1QBoyP5QOd1uAZ+goQFdvxOZ/7mN/45ytKYYammQlngZFUi638dAE6f4j+NUtrczk4QQJmDuFxXoP+KBtgiD1nrtmenaxOEp/gk=
 matrix:
   allow_failures:
   - rvm: ruby-head
+  include:
+  - rvm: 2.2
+    script: rake integration
 notifications:
   email: false
   slack:

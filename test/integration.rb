@@ -1,5 +1,7 @@
+exit 0 if ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
+
+require "bundler/setup"
 require "tinify"
-require "tempfile"
 
 require "minitest/autorun"
 
