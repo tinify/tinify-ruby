@@ -38,6 +38,13 @@ bundle install
 rake
 ```
 
+### Integration tests
+
+```
+bundle install
+TINIFY_KEY=$YOUR_API_KEY rake integration
+```
+
 ## License
 
 This software is licensed under the MIT License. [View the license](LICENSE).
