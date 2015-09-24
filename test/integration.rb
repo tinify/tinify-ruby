@@ -13,16 +13,16 @@ describe "client" do
   optimized = Tinify.from_file(unoptimized_path)
 
   it "should compress" do
-    Tempfile.open("optimized.png") do |tmp|
-      optimized.to_file(tmp.path)
-      assert_operator tmp.size, :<, 1500
+    Tempfile.open("optimized.png") do |file|
+      optimized.to_file(file.path)
+      assert_operator file.size, :<, 1500
     end
   end
 
   it "should resize" do
-    Tempfile.open("resized.png") do |tmp|
-      optimized.resize(method: "fit", width: 50, height: 20).to_file(tmp.path)
-      assert_operator tmp.size, :<, 800
+    Tempfile.open("resized.png") do |file|
+      optimized.resize(method: "fit", width: 50, height: 20).to_file(file.path)
+      assert_operator file.size, :<, 800
     end
   end
 end
