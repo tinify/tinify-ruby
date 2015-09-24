@@ -17,6 +17,7 @@ matrix:
   - rvm: ruby-head
   include:
   - rvm: 2.2
+    env: INTEGRATION_TESTS=true
     script: rake integration
 notifications:
   email: false
@@ -31,3 +32,4 @@ deploy:
     tags: true
     repo: tinify/tinify-ruby
     ruby: 2.2
+    condition: "$INTEGRATION_TESTS != true"
