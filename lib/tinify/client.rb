@@ -20,9 +20,13 @@ module Tinify
     end
 
     def request(method, url, body = nil, header = {})
-      if Hash === body && !body.empty?
-        body = JSON.generate(body)
-        header["Content-Type"] = "application/json"
+      if Hash === body
+        if body.empty?
+          body = nil
+        else
+          body = JSON.generate(body)
+          header["Content-Type"] = "application/json"
+        end
       end
 
       begin

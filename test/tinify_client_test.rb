@@ -56,6 +56,21 @@ describe Tinify::Client do
       end
     end
 
+    describe "with empty hash" do
+      before do
+        stub_request(:get, "https://api:key@api.tinify.com").to_return(
+          status: 200,
+          headers: { "Compression-Count" => "12" }
+        )
+      end
+
+      it "should issue request without body" do
+        subject.request(:get, "/", {})
+        assert_not_requested :get, "https://api:key@api.tinify.com",
+          headers: { "Content-Type" => "application/x-www-form-urlencoded" }
+      end
+    end
+
     describe "with timeout" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_timeout
