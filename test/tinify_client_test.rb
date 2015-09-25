@@ -25,6 +25,12 @@ describe Tinify::Client do
         assert_requested :get, "https://api:key@api.tinify.com", body: nil
       end
 
+      it "should issue request without content type when options are empty" do
+        subject.request(:get, "/", {})
+        assert_not_requested :get, "https://api:key@api.tinify.com",
+          headers: { "Content-Type" => "application/x-www-form-urlencoded" }
+      end
+
       it "should issue request with json body" do
         subject.request(:get, "/", { hello: "world" })
         assert_requested :get, "https://api:key@api.tinify.com",
@@ -53,21 +59,6 @@ describe Tinify::Client do
           assert_requested :get, "https://api:key@api.tinify.com",
             headers: { "User-Agent" => "#{Tinify::Client::USER_AGENT} TestApp/0.1" }
         end
-      end
-    end
-
-    describe "with empty hash" do
-      before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 200,
-          headers: { "Compression-Count" => "12" }
-        )
-      end
-
-      it "should issue request without body" do
-        subject.request(:get, "/", {})
-        assert_not_requested :get, "https://api:key@api.tinify.com",
-          headers: { "Content-Type" => "application/x-www-form-urlencoded" }
       end
     end
 
