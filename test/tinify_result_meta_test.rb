@@ -28,4 +28,28 @@ describe Tinify::ResultMeta do
       end
     end
   end
+
+  describe "without metadata" do
+    subject do
+      Tinify::ResultMeta.new({})
+    end
+
+    describe "width" do
+      it "should return nil" do
+        assert_nil subject.width
+      end
+    end
+
+    describe "height" do
+      it "should return nil" do
+        assert_nil subject.height
+      end
+    end
+
+    describe "location" do
+      it "should return nil" do
+        assert_nil subject.location
+      end
+    end
+  end
 end

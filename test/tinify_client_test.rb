@@ -9,8 +9,15 @@ describe Tinify::Client do
     describe "when valid" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 200,
+          status: 201,
           headers: { "Compression-Count" => "12" }
+        )
+        stub_request(:get, "https://api:key@api.tinify.com/shrink").to_return(
+          status: 201,
+          headers: {
+            "Compression-Count" => "12",
+            "Location" => "https://api.tinify.com/output/3spbi1cd7rs812lb.png"
+          }
         )
       end
 
@@ -18,6 +25,21 @@ describe Tinify::Client do
         subject.request(:get, "/")
         assert_requested :get, "https://api:key@api.tinify.com",
           headers: { "Authorization" => "Basic " + ["api:key"].pack("m").chomp }
+      end
+
+      it "should issue request to endpoint" do
+        subject.request(:get, "/shrink", {})
+        assert_requested :get, "https://api:key@api.tinify.com/shrink"
+      end
+
+      it "should issue request with method" do
+        subject.request(:get, "/shrink", {})
+        assert_requested :get, "https://api:key@api.tinify.com/shrink"
+      end
+
+      it "should return response" do
+        response = subject.request(:get, "/shrink", {})
+        assert_equal "https://api.tinify.com/output/3spbi1cd7rs812lb.png", response.headers["Location"]
       end
 
       it "should issue request without body when options are empty" do

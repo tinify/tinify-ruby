@@ -13,7 +13,7 @@ module Tinify
     alias_method :to_buffer, :data
 
     def size
-      @meta["Content-Length"].to_i
+      @meta["Content-Length"].to_i.nonzero?
     end
 
     def media_type

@@ -58,6 +58,13 @@ describe Tinify::Source do
         status: 200,
         headers: { Location: "https://bucket.s3.amazonaws.com/example" }
       )
+
+      stub_request(:post, "https://api:valid@api.tinify.com/some/location").with(
+        body: '{"resize":{"width":400},"store":{"service":"s3"}}'
+      ).to_return(
+        status: 200,
+        headers: { Location: "https://bucket.s3.amazonaws.com/example" }
+      )
     end
 
     describe "from_file" do
@@ -103,6 +110,11 @@ describe Tinify::Source do
 
       it "should return result meta with location" do
         result = Tinify::Source.from_buffer("png file").store(service: "s3")
+        assert_equal "https://bucket.s3.amazonaws.com/example", result.location
+      end
+
+      it "should include resize options if set" do
+        result = Tinify::Source.from_buffer("png file").resize(width: 400).store(service: "s3")
         assert_equal "https://bucket.s3.amazonaws.com/example", result.location
       end
     end

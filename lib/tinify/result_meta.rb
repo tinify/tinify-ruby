@@ -5,11 +5,11 @@ module Tinify
     end
 
     def width
-      @meta["Image-Width"].to_i
+      @meta["Image-Width"].to_i.nonzero?
     end
 
     def height
-      @meta["Image-Height"].to_i
+      @meta["Image-Height"].to_i.nonzero?
     end
 
     def location
