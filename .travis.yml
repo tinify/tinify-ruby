@@ -18,7 +18,7 @@ matrix:
   include:
   - rvm: 2.2
     env: INTEGRATION_TESTS=true
-    script: rake integration
+    script: "[ \"$TRAVIS_PULL_REQUEST\" == \"false\" ] && rake integration"
 notifications:
   email: false
   slack:

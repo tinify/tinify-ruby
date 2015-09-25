@@ -1,5 +1,3 @@
-exit 0 if ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
-
 abort "Set the TINIFY_KEY environment variable." unless ENV["TINIFY_KEY"]
 
 require "bundler/setup"
