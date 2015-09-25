@@ -1,12 +1,13 @@
 exit 0 if ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
 
+abort "Set the TINIFY_KEY environment variable." unless ENV["TINIFY_KEY"]
+
 require "bundler/setup"
 require "tinify"
 
 require "minitest/autorun"
 
-describe "client" do
-  abort "Set the TINIFY_KEY environment variable." unless ENV["TINIFY_KEY"]
+describe "client integration" do
   Tinify.key = ENV["TINIFY_KEY"]
 
   unoptimized_path = File.expand_path("../examples/voormedia.png", __FILE__)
