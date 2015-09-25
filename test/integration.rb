@@ -16,6 +16,7 @@ describe "client integration" do
   it "should compress" do
     Tempfile.open("optimized.png") do |file|
       optimized.to_file(file.path)
+      assert_operator file.size, :>, 0
       assert_operator file.size, :<, 1500
     end
   end
@@ -23,6 +24,7 @@ describe "client integration" do
   it "should resize" do
     Tempfile.open("resized.png") do |file|
       optimized.resize(method: "fit", width: 50, height: 20).to_file(file.path)
+      assert_operator file.size, :>, 0
       assert_operator file.size, :<, 800
     end
   end
