@@ -2,7 +2,7 @@
 
 # Tinify API client for Ruby
 
-Ruby client for the Tinify API. Tinify compresses your images intelligently. Read more at https://tinify.com.
+Ruby client for the Tinify API, used for [TinyPNG](https://tinypng.com) and [TinyJPG](https://tinyjpg.com). Tinify compresses your images intelligently. Read more at [http://tinify.com](http://tinify.com).
 
 ## Documentation
 
