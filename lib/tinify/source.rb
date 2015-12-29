@@ -9,6 +9,11 @@ module Tinify
         response = Tinify.client.request(:post, "/shrink", string)
         new(response.headers["Location"]).freeze
       end
+
+      def from_url(url)
+        response = Tinify.client.request(:post, "/shrink", source: { url: url })
+        new(response.headers["Location"]).freeze
+      end
     end
 
     def initialize(url, commands = {})

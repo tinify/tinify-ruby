@@ -32,6 +32,10 @@ module Tinify
       Source.from_buffer(string)
     end
 
+    def from_url(string)
+      Source.from_url(string)
+    end
+
     def validate!
       client.request(:post, "/shrink")
     rescue ClientError

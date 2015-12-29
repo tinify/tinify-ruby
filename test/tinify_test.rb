@@ -116,4 +116,20 @@ describe Tinify do
       assert_kind_of Tinify::Source, Tinify.from_file(dummy_file)
     end
   end
+
+  describe "from_url" do
+    before do
+      Tinify.key = "valid"
+
+      stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
+        status: 201,
+        headers: { Location: "https://api.tinify.com/some/location" },
+        body: '{}'
+      )
+    end
+
+    it "should return source" do
+      assert_kind_of Tinify::Source, Tinify.from_url("http://example.com/test.jpg")
+    end
+  end
 end
