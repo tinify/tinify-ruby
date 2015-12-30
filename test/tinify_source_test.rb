@@ -43,50 +43,7 @@ describe Tinify::Source do
       Tinify.key = "valid"
     end
 
-    describe "posting json" do
-      before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
-          .with(body: "{\"source\":{\"url\":\"http://example.com/test.jpg\"}}")
-          .to_return(
-            status: 201,
-            headers: { Location: "https://api.tinify.com/some/location" },
-            body: '{}'
-        )
-
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
-          .with(body: "{\"source\":{\"url\":\"file://wrong\"}}")
-          .to_return(
-            status: 400,
-            body: '{
-              "error": "Source not found",
-              "message": "Cannot parse URL"
-            }'
-          )
-
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
-          status: 200,
-          body: "compressed file"
-        )
-      end
-
-      describe "from_url" do
-        it "should return source" do
-          assert_kind_of Tinify::Source, Tinify::Source.from_url("http://example.com/test.jpg")
-        end
-
-        it "should return source with data" do
-          assert_equal "compressed file", Tinify::Source.from_url("http://example.com/test.jpg").to_buffer
-        end
-
-        it "should raise error when server doesnt return a 200" do
-          assert_raises Tinify::ClientError do
-            Tinify::Source.from_url("file://wrong")
-          end
-        end
-      end
-    end
-
-    describe "posting image binary" do
+    describe "from_file" do
       before do
         stub_request(:post, "https://api:valid@api.tinify.com/shrink")
           .to_return(
@@ -122,14 +79,12 @@ describe Tinify::Source do
         )
       end
 
-      describe "from_file" do
-        it "should return source" do
-          assert_kind_of Tinify::Source, Tinify::Source.from_file(dummy_file)
-        end
+      it "should return source" do
+        assert_kind_of Tinify::Source, Tinify::Source.from_file(dummy_file)
+      end
 
-        it "should return source with data" do
-          assert_equal "compressed file", Tinify::Source.from_file(dummy_file).to_buffer
-        end
+      it "should return source with data" do
+        assert_equal "compressed file", Tinify::Source.from_file(dummy_file).to_buffer
       end
 
       describe "from_buffer" do
@@ -142,6 +97,46 @@ describe Tinify::Source do
         end
       end
 
+      describe "from_url" do
+        before do
+          stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+            .with(body: "{\"source\":{\"url\":\"http://example.com/test.jpg\"}}")
+            .to_return(
+              status: 201,
+              headers: { Location: "https://api.tinify.com/some/location" },
+              body: '{}'
+          )
+
+          stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+            .with(body: "{\"source\":{\"url\":\"file://wrong\"}}")
+            .to_return(
+              status: 400,
+              body: '{
+                "error": "Source not found",
+                "message": "Cannot parse URL"
+              }'
+            )
+
+          stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
+            status: 200,
+            body: "compressed file"
+          )
+        end
+
+        it "should return source" do
+          assert_kind_of Tinify::Source, Tinify::Source.from_url("http://example.com/test.jpg")
+        end
+
+        it "should return source with data" do
+          assert_equal "compressed file", Tinify::Source.from_url("http://example.com/test.jpg").to_buffer
+        end
+
+        it "should raise error when server doesnt return a 200" do
+          assert_raises Tinify::ClientError do
+            Tinify::Source.from_url("file://wrong")
+          end
+        end
+      end
 
       describe "result" do
         it "should return result" do
