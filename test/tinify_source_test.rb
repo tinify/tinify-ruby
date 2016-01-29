@@ -110,10 +110,7 @@ describe Tinify::Source do
           .with(body: "{\"source\":{\"url\":\"file://wrong\"}}")
           .to_return(
             status: 400,
-            body: '{
-              "error": "Source not found",
-              "message": "Cannot parse URL"
-            }'
+            body: '{"error":"Source not found","message":"Cannot parse URL"}'
           )
 
         stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
