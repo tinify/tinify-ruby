@@ -130,7 +130,7 @@ describe Tinify::Source do
         assert_equal "compressed file", Tinify::Source.from_url("http://example.com/test.jpg").to_buffer
       end
 
-      it "should raise error when server doesnt return a 200" do
+      it "should raise error if request is not ok" do
         assert_raises Tinify::ClientError do
           Tinify::Source.from_url("file://wrong")
         end
