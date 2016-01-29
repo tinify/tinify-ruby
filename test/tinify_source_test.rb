@@ -99,7 +99,7 @@ describe Tinify::Source do
     describe "from_url" do
       before do
         stub_request(:post, "https://api:valid@api.tinify.com/shrink")
-          .with(body: "{\"source\":{\"url\":\"http://example.com/test.jpg\"}}")
+          .with(body: '{"source":{"url":"http://example.com/test.jpg"}}')
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
@@ -107,7 +107,7 @@ describe Tinify::Source do
         )
 
         stub_request(:post, "https://api:valid@api.tinify.com/shrink")
-          .with(body: "{\"source\":{\"url\":\"file://wrong\"}}")
+          .with(body: '{"source":{"url":"file://wrong"}}')
           .to_return(
             status: 400,
             body: '{"error":"Source not found","message":"Cannot parse URL"}'
