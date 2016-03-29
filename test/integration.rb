@@ -32,7 +32,7 @@ describe "client integration" do
     Tempfile.open("resized.png") do |file|
       optimized.resize(method: "fit", width: 50, height: 20).to_file(file.path)
       assert_operator file.size, :>, 0
-      assert_operator file.size, :<, 800
+      assert_operator file.size, :<, 1000
     end
   end
 end
