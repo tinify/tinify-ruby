@@ -20,6 +20,11 @@ module Tinify
       @url, @commands = url.freeze, commands.freeze
     end
 
+    def preserve(*options)
+      options = Array(options).flatten
+      self.class.new(@url, @commands.merge(preserve: options))
+    end
+
     def resize(options)
       self.class.new(@url, @commands.merge(resize: options))
     end

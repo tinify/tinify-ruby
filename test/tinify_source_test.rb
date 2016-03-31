@@ -7,10 +7,10 @@ describe Tinify::Source do
     before do
       Tinify.key = "invalid"
 
-      stub_request(:post, "https://api:invalid@api.tinify.com/shrink").to_return(
-        status: 401,
-        body: '{"error":"Unauthorized","message":"Credentials are invalid"}'
-      )
+      stub_request(:post, "https://api:invalid@api.tinify.com/shrink")
+        .to_return(
+          status: 401,
+          body: '{"error":"Unauthorized","message":"Credentials are invalid"}')
     end
 
     describe "from_file" do
@@ -41,42 +41,22 @@ describe Tinify::Source do
   describe "with valid api key" do
     before do
       Tinify.key = "valid"
-
-      stub_request(:post, "https://api:valid@api.tinify.com/shrink")
-        .to_return(
-          status: 201,
-          headers: { Location: "https://api.tinify.com/some/location" },
-          body: '{}'
-        )
-
-      stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
-        status: 200,
-        body: "compressed file"
-      )
-
-      stub_request(:get, "https://api:valid@api.tinify.com/some/location").with(
-        body: '{"resize":{"width":400}}'
-      ).to_return(
-        status: 200,
-        body: "small file"
-      )
-
-      stub_request(:post, "https://api:valid@api.tinify.com/some/location").with(
-        body: '{"store":{"service":"s3"}}'
-      ).to_return(
-        status: 200,
-        headers: { Location: "https://bucket.s3.amazonaws.com/example" }
-      )
-
-      stub_request(:post, "https://api:valid@api.tinify.com/some/location").with(
-        body: '{"resize":{"width":400},"store":{"service":"s3"}}'
-      ).to_return(
-        status: 200,
-        headers: { Location: "https://bucket.s3.amazonaws.com/example" }
-      )
     end
 
     describe "from_file" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}')
+
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+          .to_return(
+            status: 200,
+            body: "compressed file")
+      end
+
       it "should return source" do
         assert_kind_of Tinify::Source, Tinify::Source.from_file(dummy_file)
       end
@@ -87,6 +67,19 @@ describe Tinify::Source do
     end
 
     describe "from_buffer" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}')
+
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+          .to_return(
+            status: 200,
+            body: "compressed file")
+      end
+
       it "should return source" do
         assert_kind_of Tinify::Source, Tinify::Source.from_buffer("png file")
       end
@@ -103,20 +96,18 @@ describe Tinify::Source do
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
-            body: '{}'
-        )
+            body: '{}')
 
         stub_request(:post, "https://api:valid@api.tinify.com/shrink")
           .with(body: '{"source":{"url":"file://wrong"}}')
           .to_return(
             status: 400,
-            body: '{"error":"Source not found","message":"Cannot parse URL"}'
-          )
+            body: '{"error":"Source not found","message":"Cannot parse URL"}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
-          status: 200,
-          body: "compressed file"
-        )
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+          .to_return(
+            status: 200,
+            body: "compressed file")
       end
 
       it "should return source" do
@@ -135,12 +126,84 @@ describe Tinify::Source do
     end
 
     describe "result" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}')
+
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+          .to_return(
+            status: 200,
+            body: "compressed file")
+      end
+
       it "should return result" do
         assert_kind_of Tinify::Result, Tinify::Source.from_buffer("png file").result
       end
     end
 
+    describe "preserve" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}')
+
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+          .with(
+            body: '{"preserve":["copyright","location"]}')
+          .to_return(
+            status: 200,
+            body: "copyrighted file")
+      end
+
+      it "should return source" do
+        source = Tinify::Source.from_buffer("png file").preserve(:copyright, :location)
+        assert_kind_of Tinify::Source, source
+      end
+
+      it "should return source with data" do
+        source = Tinify::Source.from_buffer("png file").preserve(:copyright, :location)
+        assert_equal "copyrighted file", source.to_buffer
+      end
+
+      it "should return source with data for array" do
+        source = Tinify::Source.from_buffer("png file").preserve([:copyright, :location])
+        assert_equal "copyrighted file", source.to_buffer
+      end
+
+      it "should include other options if set" do
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+          .with(
+            body: '{"resize":{"width":400},"preserve":["copyright","location"]}')
+          .to_return(
+            status: 200,
+            body: "copyrighted resized file")
+
+        source = Tinify::Source.from_buffer("png file").resize(width: 400).preserve(:copyright, :location)
+        assert_equal "copyrighted resized file", source.to_buffer
+      end
+    end
+
     describe "resize" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}')
+
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+          .with(
+            body: '{"resize":{"width":400}}')
+          .to_return(
+            status: 200,
+            body: "small file")
+      end
+
       it "should return source" do
         assert_kind_of Tinify::Source, Tinify::Source.from_buffer("png file").resize(width: 400)
       end
@@ -151,6 +214,22 @@ describe Tinify::Source do
     end
 
     describe "store" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}'
+          )
+
+        stub_request(:post, "https://api:valid@api.tinify.com/some/location")
+        .with(
+          body: '{"store":{"service":"s3"}}')
+        .to_return(
+          status: 200,
+          headers: { Location: "https://bucket.s3.amazonaws.com/example" })
+      end
+
       it "should return result meta" do
         assert_kind_of Tinify::ResultMeta, Tinify::Source.from_buffer("png file").store(service: "s3")
       end
@@ -160,19 +239,52 @@ describe Tinify::Source do
         assert_equal "https://bucket.s3.amazonaws.com/example", result.location
       end
 
-      it "should include resize options if set" do
+      it "should include other options if set" do
+        stub_request(:post, "https://api:valid@api.tinify.com/some/location")
+        .with(
+          body: '{"resize":{"width":400},"store":{"service":"s3"}}')
+        .to_return(
+          status: 200,
+          headers: { Location: "https://bucket.s3.amazonaws.com/example" })
+
         result = Tinify::Source.from_buffer("png file").resize(width: 400).store(service: "s3")
         assert_equal "https://bucket.s3.amazonaws.com/example", result.location
       end
     end
 
     describe "to_buffer" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}')
+
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
+          status: 200,
+          body: "compressed file"
+        )
+      end
+
       it "should return image data" do
         assert_equal "compressed file", Tinify::Source.from_buffer("png file").to_buffer
       end
     end
 
     describe "to_file" do
+      before do
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+          .to_return(
+            status: 201,
+            headers: { Location: "https://api.tinify.com/some/location" },
+            body: '{}')
+
+        stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
+          status: 200,
+          body: "compressed file"
+        )
+      end
+
       it "should store image data" do
         begin
           tmp = Tempfile.open("foo")
