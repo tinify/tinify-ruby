@@ -10,8 +10,8 @@ require "thread"
 
 module Tinify
   class << self
-    attr_accessor :key
-    attr_accessor :app_identifier
+    attr_reader :key
+    attr_reader :app_identifier
     attr_accessor :compression_count
 
     def key=(key)
@@ -45,10 +45,10 @@ module Tinify
     @@mutex = Mutex.new
 
     def client
-      raise AccountError.new("Provide an API key with Tinify.key = ...") unless @key
+      raise AccountError.new("Provide an API key with Tinify.key = ...") unless key
       return @client if @client
       @@mutex.synchronize do
-        @client ||= Client.new(@key, @app_identifier).freeze
+        @client ||= Client.new(key, app_identifier).freeze
       end
     end
   end
