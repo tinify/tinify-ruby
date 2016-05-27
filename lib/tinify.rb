@@ -38,6 +38,9 @@ module Tinify
 
     def validate!
       client.request(:post, "/shrink")
+    rescue AccountError => err
+      return true if err.status == 429
+      raise err
     rescue ClientError
       true
     end

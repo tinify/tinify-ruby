@@ -58,7 +58,22 @@ describe Tinify do
 
         stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
           status: 400,
-          body: '{"error":"InputMissing","message":"No input"}'
+          body: '{"error":"Input missing","message":"No input"}'
+        )
+      end
+
+      it "should return true" do
+        assert_equal true, Tinify.validate!
+      end
+    end
+
+    describe "with limited key" do
+      before do
+        Tinify.key = "valid"
+
+        stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
+          status: 429,
+          body: '{"error":"Too many requests","message":"Your monthly limit has been exceeded"}'
         )
       end
 

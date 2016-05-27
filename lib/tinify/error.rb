@@ -14,12 +14,14 @@ module Tinify
       end
     end
 
+    attr_reader :status
+
     def initialize(message, type = self.class.name.split("::").last, status = nil)
       @message, @type, @status = message, type, status
     end
 
     def message
-      if @status
+      if status
         "#{@message} (HTTP #{@status}/#{@type})"
       else
         "#{@message}"
