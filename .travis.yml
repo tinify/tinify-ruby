@@ -16,6 +16,7 @@ env:
 matrix:
   allow_failures:
   - rvm: ruby-head
+  - rvm: rbx-2
   include:
   - rvm: 2.2
     env: INTEGRATION_TESTS=true
