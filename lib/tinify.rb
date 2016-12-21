@@ -12,6 +12,7 @@ module Tinify
   class << self
     attr_reader :key
     attr_reader :app_identifier
+    attr_reader :proxy
     attr_accessor :compression_count
 
     def key=(key)
@@ -21,6 +22,11 @@ module Tinify
 
     def app_identifier=(app_identifier)
       @app_identifier = app_identifier
+      @client = nil
+    end
+
+    def proxy=(proxy)
+      @proxy = proxy
       @client = nil
     end
 
@@ -51,7 +57,7 @@ module Tinify
       raise AccountError.new("Provide an API key with Tinify.key = ...") unless key
       return @client if @client
       @@mutex.synchronize do
-        @client ||= Client.new(key, app_identifier).freeze
+        @client ||= Client.new(key, app_identifier, proxy).freeze
       end
     end
   end

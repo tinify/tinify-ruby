@@ -7,6 +7,7 @@ require "minitest/autorun"
 
 describe "client integration" do
   Tinify.key = ENV["TINIFY_KEY"]
+  Tinify.proxy = ENV["TINIFY_PROXY"]
 
   unoptimized_path = File.expand_path("../examples/voormedia.png", __FILE__)
   optimized = Tinify.from_file(unoptimized_path)

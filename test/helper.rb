@@ -6,6 +6,7 @@ require "tinify"
 module TestHelpers
   def before_setup
     Tinify.key = nil
+    Tinify.proxy = nil
     super
   end
 

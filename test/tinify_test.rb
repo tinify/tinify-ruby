@@ -34,6 +34,22 @@ describe Tinify do
     end
   end
 
+  describe "proxy" do
+    before do
+      stub_request(:get, "https://api:abcde@api.tinify.com").to_return(status: 200)
+    end
+
+    it "should reset client with new proxy" do
+      Tinify.key = "abcde"
+      Tinify.proxy = "http://localhost"
+      Tinify.client
+      Tinify.proxy = "http://user:pass@localhost:8080"
+      Tinify.client.request(:get, "/")
+      assert_requested :get, "https://api:abcde@api.tinify.com",
+        headers: { "Proxy-Authorization" => "Basic dXNlcjpwYXNz" }
+    end
+  end
+
   describe "client" do
     describe "with key" do
       it "should return client" do
@@ -45,6 +61,16 @@ describe Tinify do
     describe "without key" do
       it "should raise error" do
         assert_raises Tinify::AccountError do
+          Tinify.client
+        end
+      end
+    end
+
+    describe "with invalid proxy" do
+      it "should raise error" do
+        assert_raises Tinify::ConnectionError do
+          Tinify.key = "abcde"
+          Tinify.proxy = "http-bad-url"
           Tinify.client
         end
       end

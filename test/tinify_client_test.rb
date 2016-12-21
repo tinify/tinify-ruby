@@ -82,6 +82,18 @@ describe Tinify::Client do
             headers: { "User-Agent" => "#{Tinify::Client::USER_AGENT} TestApp/0.1" }
         end
       end
+
+      describe "with proxy" do
+        subject do
+          Tinify::Client.new("key", nil, "http://user:pass@localhost:8080")
+        end
+
+        it "should issue request with proxy authorization" do
+          subject.request(:get, "/")
+          assert_requested :get, "https://api:key@api.tinify.com",
+            headers: { "Proxy-Authorization" => "Basic dXNlcjpwYXNz" }
+        end
+      end
     end
 
     describe "with timeout" do
@@ -158,7 +170,6 @@ describe Tinify::Client do
         end
       end
     end
-
 
     describe "with bad server response" do
       before do

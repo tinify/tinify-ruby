@@ -7,8 +7,13 @@ module Tinify
     USER_AGENT = "Tinify/#{VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{defined?(RUBY_ENGINE) ? RUBY_ENGINE : "unknown"})".freeze
     CA_BUNDLE = File.expand_path("../../data/cacert.pem", __FILE__).freeze
 
-    def initialize(key, app_identifier = nil)
-      @client = HTTPClient.new
+    def initialize(key, app_identifier = nil, proxy = nil)
+      begin
+        @client = HTTPClient.new(proxy)
+      rescue ArgumentError => err
+        raise ConnectionError.new("Invalid proxy: #{err.message}")
+      end
+
       @client.base_url = API_ENDPOINT
       @client.default_header = { "User-Agent" => [USER_AGENT, app_identifier].compact.join(" ") }
 
