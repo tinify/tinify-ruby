@@ -30,9 +30,8 @@ module Tinify
     alias_method :to_s, :message
   end
 
-  class RetryableError < Error; end
   class AccountError < Error; end
   class ClientError < Error; end
-  class ServerError < RetryableError; end
-  class ConnectionError < RetryableError; end
+  class ServerError < Error; end
+  class ConnectionError < Error; end
 end

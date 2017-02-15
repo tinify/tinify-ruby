@@ -258,7 +258,7 @@ describe Tinify::Client do
       end
     end
 
-    describe "with client error once" do
+    describe "with client error" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_return(
           status: 492,
@@ -279,54 +279,13 @@ describe Tinify::Client do
       end
     end
 
-    describe "with client error repeatedly" do
-      before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 492,
-          body: '{"error":"BadRequest","message":"Oops!"}'
-        )
-      end
 
-      it "should raise client error" do
-        assert_raises Tinify::ClientError do
-          subject.request(:get, "/")
-        end
-      end
-
-      it "should raise error with message" do
-        assert_raise_with_message "Oops! (HTTP 492/BadRequest)" do
-          subject.request(:get, "/")
-        end
-      end
-    end
-
-    describe "with bad credentials once" do
+    describe "with bad credentials" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_return(
           status: 401,
           body: '{"error":"Unauthorized","message":"Oops!"}'
         ).then.to_return(status: 201)
-      end
-
-      it "should raise account error" do
-        assert_raises Tinify::AccountError do
-          subject.request(:get, "/")
-        end
-      end
-
-      it "should raise error with message" do
-        assert_raise_with_message "Oops! (HTTP 401/Unauthorized)" do
-          subject.request(:get, "/")
-        end
-      end
-    end
-
-    describe "with bad credentials repeatedly" do
-      before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 401,
-          body: '{"error":"Unauthorized","message":"Oops!"}'
-        )
       end
 
       it "should raise account error" do
