@@ -1,6 +1,9 @@
 require File.expand_path("../helper", __FILE__)
 
 describe Tinify::Client do
+  Tinify::Client.send(:remove_const, :RETRY_DELAY)
+  Tinify::Client.const_set(:RETRY_DELAY, 10)
+
   subject do
     Tinify::Client.new("key")
   end
@@ -96,7 +99,19 @@ describe Tinify::Client do
       end
     end
 
-    describe "with timeout" do
+    describe "with timeout once" do
+      before do
+        stub_request(:get, "https://api:key@api.tinify.com").to_timeout
+          .then.to_return(status: 201)
+      end
+
+      it "should return response" do
+        response = subject.request(:get, "/")
+        assert_equal "", response.body
+      end
+    end
+
+    describe "with timeout repeatedly" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_timeout
       end
@@ -114,7 +129,20 @@ describe Tinify::Client do
       end
     end
 
-    describe "with socket error" do
+    describe "with socket error once" do
+      before do
+        stub_request(:get, "https://api:key@api.tinify.com")
+          .to_raise(SocketError.new("nodename nor servname provided"))
+          .then.to_return(status: 201)
+      end
+
+      it "should return response" do
+        response = subject.request(:get, "/")
+        assert_equal "", response.body
+      end
+    end
+
+    describe "with socket error repeatedly" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_raise(SocketError.new("nodename nor servname provided"))
       end
@@ -132,7 +160,20 @@ describe Tinify::Client do
       end
     end
 
-    describe "with unexpected error" do
+    describe "with unexpected error once" do
+      before do
+        stub_request(:get, "https://api:key@api.tinify.com")
+          .to_raise("some error")
+          .then.to_return(status: 201)
+      end
+
+      it "should return response" do
+        response = subject.request(:get, "/")
+        assert_equal "", response.body
+      end
+    end
+
+    describe "with unexpected error repeatedly" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_raise("some error")
       end
@@ -150,7 +191,21 @@ describe Tinify::Client do
       end
     end
 
-    describe "with server error" do
+    describe "with server error once" do
+      before do
+        stub_request(:get, "https://api:key@api.tinify.com").to_return(
+          status: 584,
+          body: '{"error":"InternalServerError","message":"Oops!"}'
+        ).then.to_return(status: 201)
+      end
+
+      it "should return response" do
+        response = subject.request(:get, "/")
+        assert_equal "", response.body
+      end
+    end
+
+    describe "with server error repeatedly" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_return(
           status: 584,
@@ -171,7 +226,21 @@ describe Tinify::Client do
       end
     end
 
-    describe "with bad server response" do
+    describe "with bad server response once" do
+      before do
+        stub_request(:get, "https://api:key@api.tinify.com").to_return(
+          status: 543,
+          body: '<!-- this is not json -->'
+        ).then.to_return(status: 201)
+      end
+
+      it "should return response" do
+        response = subject.request(:get, "/")
+        assert_equal "", response.body
+      end
+    end
+
+    describe "with bad server response repeatedly" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_return(
           status: 543,
@@ -197,7 +266,7 @@ describe Tinify::Client do
         stub_request(:get, "https://api:key@api.tinify.com").to_return(
           status: 492,
           body: '{"error":"BadRequest","message":"Oops!"}'
-        )
+        ).then.to_return(status: 201)
       end
 
       it "should raise client error" do
@@ -213,12 +282,13 @@ describe Tinify::Client do
       end
     end
 
+
     describe "with bad credentials" do
       before do
         stub_request(:get, "https://api:key@api.tinify.com").to_return(
           status: 401,
           body: '{"error":"Unauthorized","message":"Oops!"}'
-        )
+        ).then.to_return(status: 201)
       end
 
       it "should raise account error" do
