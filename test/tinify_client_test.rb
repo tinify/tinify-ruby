@@ -1,6 +1,9 @@
 require File.expand_path("../helper", __FILE__)
 
 describe Tinify::Client do
+  Tinify::Client.send(:remove_const, :RETRY_DELAY)
+  Tinify::Client.const_set(:RETRY_DELAY, 10)
+
   subject do
     Tinify::Client.new("key")
   end

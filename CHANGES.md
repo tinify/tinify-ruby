@@ -2,4 +2,4 @@
 * Retry failed requests by default.
 
 ## 1.4.0
-* Support for HTTP proxies.
+* Added support for HTTP proxies.

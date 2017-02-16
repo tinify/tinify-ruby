@@ -7,6 +7,8 @@ module Tinify
 
     RETRY_COUNT = 1
 
+    RETRY_DELAY = 500
+
     USER_AGENT = "Tinify/#{VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{defined?(RUBY_ENGINE) ? RUBY_ENGINE : "unknown"})".freeze
 
     CA_BUNDLE = File.expand_path("../../data/cacert.pem", __FILE__).freeze
@@ -39,6 +41,8 @@ module Tinify
       end
 
       RETRY_COUNT.downto(0) do |retries|
+        sleep RETRY_DELAY / 1000.0 if retries < RETRY_COUNT
+
         begin
           response = @client.request(method, url, body: body, header: header)
         rescue HTTPClient::TimeoutError => err
