@@ -29,7 +29,8 @@ module Tinify
       @client.ssl_config.add_trust_ca(CA_BUNDLE)
     end
 
-    def request(method, url, body = nil, header = {})
+    def request(method, url, body = nil)
+      header = {}
       if Hash === body
         if body.empty?
           body = nil
