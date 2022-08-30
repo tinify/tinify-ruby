@@ -3,7 +3,6 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in tinify.gemspec
 gemspec
 
-gem 'bundler', '~> 2.3'
 gem 'rake', '~> 10.0'
 gem 'minitest', '~> 5.5'
 

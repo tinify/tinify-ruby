@@ -26,7 +26,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 2.3)
   minitest (~> 5.5)
   rake (~> 10.0)
   tinify!
