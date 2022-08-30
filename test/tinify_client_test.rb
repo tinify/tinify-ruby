@@ -259,6 +259,7 @@ describe Tinify::Client do
         begin
           subject.request(:get, "/")
         rescue => e
+          puts e.message
           assert e.message
                   .include?("'<!-- this is not json -->' (HTTP 543/ParseError)")
         end
