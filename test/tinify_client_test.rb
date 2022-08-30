@@ -255,7 +255,7 @@ describe Tinify::Client do
       end
 
       it "should raise error with message" do
-        assert_raise_with_message %r{Error while parsing response: .*unexpected token at '<!-- this is not json -->' \(HTTP 543/ParseError\)} do
+        assert_raise_with_message "Error while parsing response: 809: unexpected token at '<!-- this is not json -->' (HTTP 543/ParseError)" do
           subject.request(:get, "/")
         end
       end
