@@ -26,11 +26,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.7)
+  bundler (~> 2.3)
   minitest (~> 5.5)
   rake (~> 10.0)
   tinify!
   webmock (~> 1.23.0)
 
 BUNDLED WITH
-   1.17.2
+   2.3.19
