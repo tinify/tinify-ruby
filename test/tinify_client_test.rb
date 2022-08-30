@@ -255,8 +255,12 @@ describe Tinify::Client do
       end
 
       it "should raise error with message" do
-        assert_raise_with_message /'<!-- this is not json -->' \(HTTP 543\/ParseError\)/ do
+        # NOTE: hacky implementation for truffle and jruby.
+        begin
           subject.request(:get, "/")
+        rescue => e
+          assert e.message
+                  .include?("'<!-- this is not json -->' (HTTP 543/ParseError)")
         end
       end
     end
