@@ -7,31 +7,40 @@ jobs:
   Unit_tests:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
         ruby-version: [
           '2.6', '2.7', '3.0', '3.1',
-          jruby, truffleruby
+          jruby,
         ]
         os: [ubuntu-latest, macOS-latest, windows-latest]
-
+        experimental: [false]
+        include:
+          # TruffleRuby on Windows may fail
+          - ruby-version: truffleruby
+            os: windows-latest
+            experimental: true
+          - ruby-version: truffleruby
+            os: macOS-latest
+            experimental: false
+          - ruby-version: truffleruby
+            os: ubuntu-latest
+            experimental: false
     steps:
     - uses: actions/checkout@v3
 
     - name: Set up ruby ${{ matrix.ruby-version }}
-      if: ${{ !startsWith(matrix.os, 'windows') && matrix.os != 'truffleruby' }}
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
 
     - name: Install dependencies
-      if: ${{ !startsWith(matrix.os, 'windows') && matrix.os != 'truffleruby' }}
       run: bundle install
 
     - name: Run specs
-      if: ${{ !startsWith(matrix.os, 'windows') && matrix.os != 'truffleruby' }}
       run: bundle exec rake
 
 
