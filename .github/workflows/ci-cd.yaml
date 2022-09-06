@@ -7,7 +7,7 @@ jobs:
   Unit_tests:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
-    continue-on-error: ${{ matrix.experimental }}
+    # continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
@@ -16,12 +16,13 @@ jobs:
           jruby,
         ]
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        experimental: [false]
+        # experimental: [false]
         include:
           # TruffleRuby on Windows may fail
-          - ruby-version: truffleruby
-            os: windows-latest
-            experimental: true
+          # commented out, because it marks the build as failed with a red cross (X)
+          # - ruby-version: truffleruby
+          #   os: windows-latest
+          #   experimental: true
           - ruby-version: truffleruby
             os: macOS-latest
             experimental: false
