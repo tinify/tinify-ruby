@@ -29,6 +29,14 @@ module Tinify
       self.class.new(@url, @commands.merge(resize: options))
     end
 
+    def transcode(types)
+      self.class.new(@url, @commands.merge(type: types))
+    end
+
+    def transform(options)
+      self.class.new(@url, @commands.merge(transform: options))
+    end
+
     def store(options)
       response = Tinify.client.request(:post, @url, @commands.merge(store: options))
       ResultMeta.new(response.headers).freeze
