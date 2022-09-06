@@ -1,4 +1,6 @@
-[<img src="https://travis-ci.org/tinify/tinify-ruby.svg?branch=master" alt="Build Status">](https://travis-ci.org/tinify/tinify-ruby)
+[![Gem](https://img.shields.io/gem/v/tinify)](https://rubygems.org/gems/tinify)
+[![MIT License](http://img.shields.io/badge/license-MIT-green.svg) ](https://github.com/tinify/tinify-java/blob/main/LICENSE)
+[![Ruby CI](https://github.com/tinify/tinify-ruby/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/tinify/tinify-ruby/actions/workflows/ci-cd.yaml)
 
 # Tinify API client for Ruby
 
