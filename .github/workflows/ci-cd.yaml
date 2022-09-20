@@ -45,6 +45,7 @@ jobs:
       run: bundle exec rake
 
   Integration_tests:
+    if: github.event_name == 'push'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     needs: Unit_tests
