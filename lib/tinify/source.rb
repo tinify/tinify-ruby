@@ -29,8 +29,8 @@ module Tinify
       self.class.new(@url, @commands.merge(resize: options))
     end
 
-    def transcode(types)
-      self.class.new(@url, @commands.merge(type: types))
+    def convert(options)
+      self.class.new(@url, @commands.merge(convert: options))
     end
 
     def transform(options)

@@ -213,7 +213,7 @@ describe Tinify::Source do
       end
     end
 
-    describe "transcode" do
+    describe "convert" do
       before do
         stub_request(:post, "https://api:valid@api.tinify.com/shrink")
           .to_return(
@@ -223,18 +223,18 @@ describe Tinify::Source do
 
         stub_request(:get, "https://api:valid@api.tinify.com/some/location")
           .with(
-            body: '{"type":["image/webp"]}')
+            body: '{"convert":{"type":["image/webp"]}}')
           .to_return(
             status: 200,
-            body: "transcoded file")
+            body: "converted file")
       end
 
       it "should return source" do
-        assert_kind_of Tinify::Source, Tinify::Source.from_buffer("png file").transcode(["image/webp"])
+        assert_kind_of Tinify::Source, Tinify::Source.from_buffer("png file").convert(type: ["image/webp"])
       end
 
       it "should return source with data" do
-        assert_equal "transcoded file", Tinify::Source.from_buffer("png file").transcode(["image/webp"]).to_buffer
+        assert_equal "converted file", Tinify::Source.from_buffer("png file").convert(type: ["image/webp"]).to_buffer
       end
     end
 
@@ -265,11 +265,11 @@ describe Tinify::Source do
       it "should include other options if set" do
 
         stub_request(:get, "https://api:valid@api.tinify.com/some/location").
-        with(:body => '{"type":["image/webp"],"transform":{"color":"black"}}',
+        with(:body => '{"convert":{"type":["image/webp"]},"transform":{"color":"black"}}',
             ).
         to_return(:status => 200, :body => "trans-formed-and-coded", :headers => {})
 
-        result = Tinify::Source.from_buffer("png file").transcode(["image/webp"]).transform(color: "black")
+        result = Tinify::Source.from_buffer("png file").convert(type: ["image/webp"]).transform(color: "black")
         assert_equal "trans-formed-and-coded", result.to_buffer
       end
 
