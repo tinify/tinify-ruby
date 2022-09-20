@@ -20,5 +20,12 @@ module Tinify
       @meta["Content-Type"]
     end
     alias_method :content_type, :media_type
+
+    def extension
+      if @meta['Content-Type']
+        parts = @meta["Content-Type"].split "/"
+        parts.last
+      end
+    end
   end
 end

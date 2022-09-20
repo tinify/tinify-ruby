@@ -1,6 +1,7 @@
 ## 1.6.0
 
-Added transform & transcode methods for the Tinify API.
+Added transform & convert methods for the Tinify API.
+Added helper property for getting the file extension (Result.extension)
 
 Extend runtime support for the following runtimes:
 
