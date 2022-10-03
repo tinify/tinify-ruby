@@ -76,4 +76,15 @@ describe "client integration" do
       assert_includes contents, "Copyright Voormedia".force_encoding("binary")
     end
   end
+
+  it "should convert" do
+    Tempfile.open("optimized.png", encoding: "binary") do |file|
+      optimized.convert(type: "image/webp").to_file(file.path)
+      r = file.read
+
+      assert_equal r[0..3], "RIFF".force_encoding("binary")
+      assert_equal r[8..11], "WEBP".force_encoding("binary")
+    end
+  end
+
 end

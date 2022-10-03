@@ -47,6 +47,12 @@ describe Tinify::Result do
         assert_equal "image data", subject.to_buffer
       end
     end
+
+    describe "extension" do
+      it "should return extension" do
+        assert_equal "png", subject.extension
+      end
+    end
   end
 
   describe "without meta and data" do
@@ -89,5 +95,12 @@ describe Tinify::Result do
         assert_nil subject.to_buffer
       end
     end
+
+    describe "extension" do
+      it "should return nil" do
+        assert_nil subject.extension
+      end
+    end
+
   end
 end

@@ -11,7 +11,7 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     crack (0.4.5)
       rexml
-    hashdiff (1.0.1)
+    hashdiff (0.3.9)
     httpclient (2.8.3)
     minitest (5.16.3)
     public_suffix (5.0.0)
