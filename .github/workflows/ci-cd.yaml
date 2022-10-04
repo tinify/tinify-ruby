@@ -92,7 +92,7 @@ jobs:
           ruby-version: 2.7
       - name: Check if properly tagged
         run: |
-          PACKAGE_VERSION="$(ruby -e 'puts Gem::Specification::load('tinify.gemspec').version')";
+          PACKAGE_VERSION="$(ruby -e 'puts Gem::Specification::load("tinify.gemspec").version')";
           CURRENT_TAG="${GITHUB_REF#refs/*/}";
           if  [[ "${PACKAGE_VERSION}" != "${CURRENT_TAG}" ]]; then
             >&2 echo "Tag mismatch"
