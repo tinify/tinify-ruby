@@ -6,6 +6,7 @@ module Tinify
     API_ENDPOINT = "https://api.tinify.com".freeze
 
     RETRY_COUNT = 1
+
     RETRY_DELAY = 500
 
     USER_AGENT = "Tinify/#{VERSION} Ruby/#{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{defined?(RUBY_ENGINE) ? RUBY_ENGINE : "unknown"})".freeze
@@ -29,8 +30,7 @@ module Tinify
       @client.ssl_config.add_trust_ca(CA_BUNDLE)
     end
 
-    def request(method, url, body = nil)
-      header = {}
+    def request(method, url, body = nil, header = {})
       if Hash === body
         if body.empty?
           body = nil
