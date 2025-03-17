@@ -15,7 +15,7 @@ GEM
     httpclient (2.8.3)
     minitest (5.25.5)
     public_suffix (5.0.0)
-    rake (13.0.6)
+    rake (13.2.1)
     rexml (3.2.5)
     webmock (1.23.0)
       addressable (>= 2.3.6)
@@ -27,7 +27,7 @@ PLATFORMS
 
 DEPENDENCIES
   minitest
-  rake (>= 12.3.3)
+  rake
   tinify!
   webmock (~> 1.23.0)
 
