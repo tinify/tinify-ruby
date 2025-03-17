@@ -11,6 +11,7 @@ GEM
       public_suffix (>= 2.0.2, < 7.0)
     base64 (0.2.0)
     bigdecimal (3.1.9)
+    bigdecimal (3.1.9-java)
     crack (1.0.0)
       bigdecimal
       rexml
@@ -28,7 +29,12 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
 
 PLATFORMS
+  arm64-darwin
+  java
   ruby
+  x64-mingw-ucrt
+  x86_64-darwin
+  x86_64-linux
 
 DEPENDENCIES
   base64
