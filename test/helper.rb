@@ -1,11 +1,11 @@
 require "bundler/setup"
-require 'base64'
+Bundler.require
+
 require "minitest/autorun"
 require "webmock/minitest"
+require "tinify"
 
 WebMock.disable_net_connect!(allow_localhost: true)
-
-require "tinify"
 
 module TestHelpers
   def before_setup
