@@ -28,6 +28,8 @@ module TestHelpers
   end
 end
 
-class MiniTest::Spec
-  include TestHelpers
+module Minitest
+  class Spec
+    include TestHelpers
+  end
 end

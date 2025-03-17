@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "rake", ">= 12.3.3"
-gem 'minitest', '~> 5.5'
+gem 'minitest'
 
 # TODO: Pinned because `Webmock ~> 1.24` breaks specs. Unpin in future
 #       refactor.
