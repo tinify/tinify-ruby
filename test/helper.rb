@@ -1,6 +1,6 @@
 require "bundler/setup"
+require 'base64'
 require "minitest/autorun"
-
 require "webmock/minitest"
 
 WebMock.disable_net_connect!(allow_localhost: true)
