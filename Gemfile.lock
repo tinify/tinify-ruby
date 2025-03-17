@@ -7,18 +7,20 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.1)
-      public_suffix (>= 2.0.2, < 6.0)
-    crack (0.4.5)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
+    bigdecimal (3.1.9)
+    crack (1.0.0)
+      bigdecimal
       rexml
-    hashdiff (0.3.9)
+    hashdiff (1.1.2)
     httpclient (2.9.0)
       mutex_m
     minitest (5.25.5)
     mutex_m (0.3.0)
-    public_suffix (5.0.0)
+    public_suffix (6.0.1)
     rake (13.2.1)
-    rexml (3.2.5)
+    rexml (3.4.1)
     webmock (1.23.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
