@@ -8,4 +8,4 @@ gem 'minitest'
 
 # TODO: Pinned because `Webmock ~> 1.24` breaks specs. Unpin in future
 #       refactor.
-gem 'webmock', '~> 1.23.0'
+gem 'webmock', '~> 2.0.0'

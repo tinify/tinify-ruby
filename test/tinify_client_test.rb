@@ -11,33 +11,38 @@ describe Tinify::Client do
   describe "request" do
     describe "when valid" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 201,
-          headers: { "Compression-Count" => "12" }
-        )
-        stub_request(:get, "https://api:key@api.tinify.com/shrink").to_return(
-          status: 201,
-          headers: {
-            "Compression-Count" => "12",
-            "Location" => "https://api.tinify.com/output/3spbi1cd7rs812lb.png"
-          }
-        )
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 201,
+            headers: { "Compression-Count" => "12" }
+          )
+
+        stub_request(:get, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 201,
+            headers: {
+              "Compression-Count" => "12",
+              "Location" => "https://api.tinify.com/output/3spbi1cd7rs812lb.png"
+            }
+          )
       end
 
       it "should issue request" do
         subject.request(:get, "/")
-        assert_requested :get, "https://api:key@api.tinify.com",
-          headers: { "Authorization" => "Basic " + ["api:key"].pack("m").chomp }
+        assert_requested :get, "https://api.tinify.com",
+          headers: { "Authorization" => "Basic #{ Base64.strict_encode64('api:key').chomp}" }
       end
 
       it "should issue request to endpoint" do
         subject.request(:get, "/shrink", {})
-        assert_requested :get, "https://api:key@api.tinify.com/shrink"
+        assert_requested :get, "https://api.tinify.com/shrink"
       end
 
       it "should issue request with method" do
         subject.request(:get, "/shrink", {})
-        assert_requested :get, "https://api:key@api.tinify.com/shrink"
+        assert_requested :get, "https://api.tinify.com/shrink"
       end
 
       it "should return response" do
@@ -47,25 +52,25 @@ describe Tinify::Client do
 
       it "should issue request without body when options are empty" do
         subject.request(:get, "/", {})
-        assert_requested :get, "https://api:key@api.tinify.com", body: nil
+        assert_requested :get, "https://api.tinify.com", body: nil
       end
 
       it "should issue request without content type when options are empty" do
         subject.request(:get, "/", {})
-        assert_not_requested :get, "https://api:key@api.tinify.com",
+        assert_not_requested :get, "https://api.tinify.com",
           headers: { "Content-Type" => "application/x-www-form-urlencoded" }
       end
 
       it "should issue request with json body" do
         subject.request(:get, "/", { hello: "world" })
-        assert_requested :get, "https://api:key@api.tinify.com",
+        assert_requested :get, "https://api.tinify.com",
           headers: { "Content-Type" => "application/json" },
           body: '{"hello":"world"}'
       end
 
       it "should issue request with user agent" do
         subject.request(:get, "/")
-        assert_requested :get, "https://api:key@api.tinify.com",
+        assert_requested :get, "https://api.tinify.com",
           headers: { "User-Agent" => Tinify::Client::USER_AGENT }
       end
 
@@ -81,7 +86,7 @@ describe Tinify::Client do
 
         it "should issue request with user agent" do
           subject.request(:get, "/")
-          assert_requested :get, "https://api:key@api.tinify.com",
+          assert_requested :get, "https://api.tinify.com",
             headers: { "User-Agent" => "#{Tinify::Client::USER_AGENT} TestApp/0.1" }
         end
       end
@@ -93,7 +98,7 @@ describe Tinify::Client do
 
         it "should issue request with proxy authorization" do
           subject.request(:get, "/")
-          assert_requested :get, "https://api:key@api.tinify.com",
+          assert_requested :get, "https://api.tinify.com",
             headers: { "Proxy-Authorization" => "Basic dXNlcjpwYXNz" }
         end
       end
@@ -101,8 +106,11 @@ describe Tinify::Client do
 
     describe "with timeout once" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_timeout
-          .then.to_return(status: 201)
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_timeout
+          .then
+          .to_return(status: 201)
       end
 
       it "should return response" do
@@ -113,7 +121,9 @@ describe Tinify::Client do
 
     describe "with timeout repeatedly" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_timeout
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_timeout
       end
 
       it "should raise connection error" do
@@ -131,7 +141,8 @@ describe Tinify::Client do
 
     describe "with socket error once" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com")
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
           .to_raise(SocketError.new("nodename nor servname provided"))
           .then.to_return(status: 201)
       end
@@ -144,7 +155,9 @@ describe Tinify::Client do
 
     describe "with socket error repeatedly" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_raise(SocketError.new("nodename nor servname provided"))
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_raise(SocketError.new("nodename nor servname provided"))
       end
 
       it "should raise error" do
@@ -162,9 +175,11 @@ describe Tinify::Client do
 
     describe "with unexpected error once" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com")
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
           .to_raise("some error")
-          .then.to_return(status: 201)
+          .then
+          .to_return(status: 201)
       end
 
       it "should return response" do
@@ -175,7 +190,9 @@ describe Tinify::Client do
 
     describe "with unexpected error repeatedly" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_raise("some error")
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_raise("some error")
       end
 
       it "should raise error" do
@@ -193,10 +210,14 @@ describe Tinify::Client do
 
     describe "with server error once" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 584,
-          body: '{"error":"InternalServerError","message":"Oops!"}'
-        ).then.to_return(status: 201)
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 584,
+            body: '{"error":"InternalServerError","message":"Oops!"}'
+          )
+          .then
+          .to_return(status: 201)
       end
 
       it "should return response" do
@@ -207,10 +228,12 @@ describe Tinify::Client do
 
     describe "with server error repeatedly" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 584,
-          body: '{"error":"InternalServerError","message":"Oops!"}'
-        )
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 584,
+            body: '{"error":"InternalServerError","message":"Oops!"}'
+          )
       end
 
       it "should raise server error" do
@@ -228,10 +251,14 @@ describe Tinify::Client do
 
     describe "with bad server response once" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 543,
-          body: '<!-- this is not json -->'
-        ).then.to_return(status: 201)
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 543,
+            body: '<!-- this is not json -->'
+          )
+          .then
+          .to_return(status: 201)
       end
 
       it "should return response" do
@@ -242,10 +269,12 @@ describe Tinify::Client do
 
     describe "with bad server response repeatedly" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 543,
-          body: '<!-- this is not json -->'
-        )
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 543,
+            body: '<!-- this is not json -->'
+          )
       end
 
       it "should raise server error" do
@@ -255,7 +284,7 @@ describe Tinify::Client do
       end
 
       it "should raise error with message" do
-        assert_raise_with_message /\(HTTP 543\/ParseError\)/ do
+        assert_raise_with_message(/\(HTTP 543\/ParseError\)/) do
           subject.request(:get, "/")
         end
       end
@@ -263,10 +292,13 @@ describe Tinify::Client do
 
     describe "with client error" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 492,
-          body: '{"error":"BadRequest","message":"Oops!"}'
-        ).then.to_return(status: 201)
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 492,
+            body: '{"error":"BadRequest","message":"Oops!"}'
+          ).then
+           .to_return(status: 201)
       end
 
       it "should raise client error" do
@@ -285,10 +317,13 @@ describe Tinify::Client do
 
     describe "with bad credentials" do
       before do
-        stub_request(:get, "https://api:key@api.tinify.com").to_return(
-          status: 401,
-          body: '{"error":"Unauthorized","message":"Oops!"}'
-        ).then.to_return(status: 201)
+        stub_request(:get, "https://api.tinify.com")
+          .with(basic_auth: ['api', 'key'])
+          .to_return(
+            status: 401,
+            body: '{"error":"Unauthorized","message":"Oops!"}'
+          ).then
+           .to_return(status: 201)
       end
 
       it "should raise account error" do

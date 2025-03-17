@@ -5,7 +5,9 @@ describe Tinify do
 
   describe "key" do
     before do
-      stub_request(:get, "https://api:fghij@api.tinify.com").to_return(status: 200)
+      stub_request(:get, "https://api.tinify.com")
+        .with(basic_auth: ['api', 'fghij'])
+        .to_return(status: 200)
     end
 
     it "should reset client with new key" do
@@ -13,14 +15,16 @@ describe Tinify do
       Tinify.client
       Tinify.key = "fghij"
       Tinify.client.request(:get, "/")
-      assert_requested :get, "https://api:fghij@api.tinify.com",
-        headers: { "Authorization" => "Basic " + ["api:fghij"].pack("m").chomp }
+      assert_requested :get, "https://api.tinify.com",
+        headers: { "Authorization" => "Basic #{ Base64.strict_encode64('api:fghij').chomp}" }
     end
   end
 
   describe "app_identifier" do
     before do
-      stub_request(:get, "https://api:abcde@api.tinify.com").to_return(status: 200)
+      stub_request(:get, "https://api.tinify.com")
+        .with(basic_auth: ['api', 'abcde'])
+        .to_return(status: 200)
     end
 
     it "should reset client with new app identifier" do
@@ -29,14 +33,16 @@ describe Tinify do
       Tinify.client
       Tinify.app_identifier = "MyApp/2.0"
       Tinify.client.request(:get, "/")
-      assert_requested :get, "https://api:abcde@api.tinify.com",
+      assert_requested :get, "https://api.tinify.com",
         headers: { "User-Agent" => "#{Tinify::Client::USER_AGENT} MyApp/2.0" }
     end
   end
 
   describe "proxy" do
     before do
-      stub_request(:get, "https://api:abcde@api.tinify.com").to_return(status: 200)
+      stub_request(:get, "https://api.tinify.com")
+        .with(basic_auth: ['api', 'abcde'])
+        .to_return(status: 200)
     end
 
     it "should reset client with new proxy" do
@@ -45,7 +51,7 @@ describe Tinify do
       Tinify.client
       Tinify.proxy = "http://user:pass@localhost:8080"
       Tinify.client.request(:get, "/")
-      assert_requested :get, "https://api:abcde@api.tinify.com",
+      assert_requested :get, "https://api.tinify.com",
         headers: { "Proxy-Authorization" => "Basic dXNlcjpwYXNz" }
     end
   end
@@ -82,10 +88,12 @@ describe Tinify do
       before do
         Tinify.key = "valid"
 
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
-          status: 400,
-          body: '{"error":"Input missing","message":"No input"}'
-        )
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
+          .to_return(
+            status: 400,
+            body: '{"error":"Input missing","message":"No input"}'
+          )
       end
 
       it "should return true" do
@@ -97,10 +105,12 @@ describe Tinify do
       before do
         Tinify.key = "valid"
 
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
-          status: 429,
-          body: '{"error":"Too many requests","message":"Your monthly limit has been exceeded"}'
-        )
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
+          .to_return(
+            status: 429,
+            body: '{"error":"Too many requests","message":"Your monthly limit has been exceeded"}'
+          )
       end
 
       it "should return true" do
@@ -112,10 +122,12 @@ describe Tinify do
       before do
         Tinify.key = "invalid"
 
-        stub_request(:post, "https://api:invalid@api.tinify.com/shrink").to_return(
-          status: 401,
-          body: '{"error":"Unauthorized","message":"Credentials are invalid"}'
-        )
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'invalid'])
+          .to_return(
+            status: 401,
+            body: '{"error":"Unauthorized","message":"Credentials are invalid"}'
+          )
       end
 
       it "should raise error" do
@@ -130,11 +142,13 @@ describe Tinify do
     before do
       Tinify.key = "valid"
 
-      stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
-        status: 201,
-        headers: { Location: "https://api.tinify.com/some/location" },
-        body: '{}'
-      )
+      stub_request(:post, "https://api.tinify.com/shrink")
+        .with(basic_auth: ['api', 'valid'])
+        .to_return(
+          status: 201,
+          headers: { Location: "https://api.tinify.com/some/location" },
+          body: '{}'
+        )
     end
 
     it "should return source" do
@@ -146,11 +160,13 @@ describe Tinify do
     before do
       Tinify.key = "valid"
 
-      stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
-        status: 201,
-        headers: { Location: "https://api.tinify.com/some/location" },
-        body: '{}'
-      )
+      stub_request(:post, "https://api.tinify.com/shrink")
+        .with(basic_auth: ['api', 'valid'])
+        .to_return(
+          status: 201,
+          headers: { Location: "https://api.tinify.com/some/location" },
+          body: '{}'
+        )
     end
 
     it "should return source" do
@@ -162,11 +178,13 @@ describe Tinify do
     before do
       Tinify.key = "valid"
 
-      stub_request(:post, "https://api:valid@api.tinify.com/shrink").to_return(
-        status: 201,
-        headers: { Location: "https://api.tinify.com/some/location" },
-        body: '{}'
-      )
+      stub_request(:post, "https://api.tinify.com/shrink")
+        .with(basic_auth: ['api', 'valid'])
+        .to_return(
+          status: 201,
+          headers: { Location: "https://api.tinify.com/some/location" },
+          body: '{}'
+        )
     end
 
     it "should return source" do

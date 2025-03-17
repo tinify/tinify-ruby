@@ -7,7 +7,8 @@ describe Tinify::Source do
     before do
       Tinify.key = "invalid"
 
-      stub_request(:post, "https://api:invalid@api.tinify.com/shrink")
+      stub_request(:post, "https://api.tinify.com/shrink")
+        .with(basic_auth: ['api', 'invalid'])
         .to_return(
           status: 401,
           body: '{"error":"Unauthorized","message":"Credentials are invalid"}')
@@ -45,13 +46,15 @@ describe Tinify::Source do
 
     describe "from_file" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 200,
             body: "compressed file")
@@ -68,13 +71,15 @@ describe Tinify::Source do
 
     describe "from_buffer" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 200,
             body: "compressed file")
@@ -91,20 +96,27 @@ describe Tinify::Source do
 
     describe "from_url" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
-          .with(body: '{"source":{"url":"http://example.com/test.jpg"}}')
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(
+            basic_auth: ['api', 'valid'],
+            body: '{"source":{"url":"http://example.com/test.jpg"}}'
+          )
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
-          .with(body: '{"source":{"url":"file://wrong"}}')
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(
+            body: '{"source":{"url":"file://wrong"}}',
+            basic_auth: ['api', 'valid']
+          )
           .to_return(
             status: 400,
             body: '{"error":"Source not found","message":"Cannot parse URL"}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 200,
             body: "compressed file")
@@ -127,13 +139,15 @@ describe Tinify::Source do
 
     describe "result" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 200,
             body: "compressed file")
@@ -146,14 +160,16 @@ describe Tinify::Source do
 
     describe "preserve" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
           .with(
+            basic_auth: ['api', 'valid'],
             body: '{"preserve":["copyright","location"]}')
           .to_return(
             status: 200,
@@ -176,8 +192,9 @@ describe Tinify::Source do
       end
 
       it "should include other options if set" do
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
           .with(
+            basic_auth: ['api', 'valid'],
             body: '{"resize":{"width":400},"preserve":["copyright","location"]}')
           .to_return(
             status: 200,
@@ -190,14 +207,16 @@ describe Tinify::Source do
 
     describe "resize" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
           .with(
+            basic_auth: ['api', 'valid'],
             body: '{"resize":{"width":400}}')
           .to_return(
             status: 200,
@@ -215,14 +234,16 @@ describe Tinify::Source do
 
     describe "convert" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
           .with(
+            basic_auth: ['api', 'valid'],
             body: '{"convert":{"type":["image/webp"]}}')
           .to_return(
             status: 200,
@@ -240,14 +261,16 @@ describe Tinify::Source do
 
     describe "transform" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:get, "https://api.tinify.com/some/location")
           .with(
+            basic_auth: ['api', 'valid'],
             body: '{"transform":{"color":"black"}}')
           .to_return(
             status: 200,
@@ -264,7 +287,7 @@ describe Tinify::Source do
 
       it "should include other options if set" do
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location").
+        stub_request(:get, "https://api.tinify.com/some/location").
         with(:body => '{"convert":{"type":["image/webp"]},"transform":{"color":"black"}}',
             ).
         to_return(:status => 200, :body => "trans-formed-and-coded", :headers => {})
@@ -272,21 +295,21 @@ describe Tinify::Source do
         result = Tinify::Source.from_buffer("png file").convert(type: ["image/webp"]).transform(color: "black")
         assert_equal "trans-formed-and-coded", result.to_buffer
       end
-
-
     end
 
     describe "store" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}'
           )
 
-        stub_request(:post, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:post, "https://api.tinify.com/some/location")
         .with(
+          basic_auth: ['api', 'valid'],
           body: '{"store":{"service":"s3"}}')
         .to_return(
           status: 200,
@@ -303,8 +326,9 @@ describe Tinify::Source do
       end
 
       it "should include other options if set" do
-        stub_request(:post, "https://api:valid@api.tinify.com/some/location")
+        stub_request(:post, "https://api.tinify.com/some/location")
         .with(
+          basic_auth: ['api', 'valid'],
           body: '{"resize":{"width":400},"store":{"service":"s3"}}')
         .to_return(
           status: 200,
@@ -317,16 +341,19 @@ describe Tinify::Source do
 
     describe "to_buffer" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
-          status: 200,
-          body: "compressed file"
-        )
+        stub_request(:get, "https://api.tinify.com/some/location")
+          .with(basic_auth: ['api', 'valid'])
+          .to_return(
+            status: 200,
+            body: "compressed file"
+          )
       end
 
       it "should return image data" do
@@ -336,16 +363,19 @@ describe Tinify::Source do
 
     describe "to_file" do
       before do
-        stub_request(:post, "https://api:valid@api.tinify.com/shrink")
+        stub_request(:post, "https://api.tinify.com/shrink")
+          .with(basic_auth: ['api', 'valid'])
           .to_return(
             status: 201,
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api:valid@api.tinify.com/some/location").to_return(
-          status: 200,
-          body: "compressed file"
-        )
+        stub_request(:get, "https://api.tinify.com/some/location")
+          .with(basic_auth: ['api', 'valid'])
+          .to_return(
+            status: 200,
+            body: "compressed file"
+          )
       end
 
       it "should store image data" do
