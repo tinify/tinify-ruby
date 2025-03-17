@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     tinify (1.6.0)
-      httpclient (~> 2.6)
+      httpclient (>= 2.9, < 3)
 
 GEM
   remote: https://rubygems.org/
@@ -12,8 +12,10 @@ GEM
     crack (0.4.5)
       rexml
     hashdiff (0.3.9)
-    httpclient (2.8.3)
+    httpclient (2.9.0)
+      mutex_m
     minitest (5.25.5)
+    mutex_m (0.3.0)
     public_suffix (5.0.0)
     rake (13.2.1)
     rexml (3.2.5)
