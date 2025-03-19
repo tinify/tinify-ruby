@@ -50,7 +50,7 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version: [
-          "2.7", "3.1"
+          "3.1", "3.4"
         ]
         os: [
           ubuntu-latest,
@@ -61,7 +61,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up ruby ${{ matrix.ruby-version }}
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
@@ -83,10 +83,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Ruby 2.7
+      - name: Set up Ruby 3.4
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 3.4
       - name: Check if properly tagged
         run: |
           PACKAGE_VERSION="$(ruby -e 'puts Gem::Specification::load("tinify.gemspec").version')";
