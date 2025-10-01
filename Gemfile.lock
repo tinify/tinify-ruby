@@ -9,19 +9,19 @@ GEM
   specs:
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    base64 (0.2.0)
-    bigdecimal (3.1.9)
-    bigdecimal (3.1.9-java)
+    base64 (0.3.0)
+    bigdecimal (3.2.3)
+    bigdecimal (3.2.3-java)
     crack (1.0.0)
       bigdecimal
       rexml
-    hashdiff (1.1.2)
+    hashdiff (1.2.1)
     httpclient (2.9.0)
       mutex_m
     minitest (5.25.5)
     mutex_m (0.3.0)
-    public_suffix (6.0.1)
-    rake (13.2.1)
+    public_suffix (6.0.2)
+    rake (13.3.0)
     rexml (3.4.4)
     webmock (3.25.1)
       addressable (>= 2.8.0)

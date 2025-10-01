@@ -153,8 +153,35 @@ describe Tinify::Source do
             body: "compressed file")
       end
 
-      it "should return result" do
-        assert_kind_of Tinify::Result, Tinify::Source.from_buffer("png file").result
+      it 'has a `Tinify::Result`' do
+        assert_kind_of(Tinify::Result,
+                        Tinify::Source.from_buffer("png file").result)
+      end
+
+      it 'has result data' do
+        assert_equal('compressed file',
+                      Tinify::Source.from_buffer("png file").result.data)
+      end
+
+      it 'is a :get request' do
+        Tinify::Source.from_buffer("png file").result
+
+        assert_requested(:get, "https://api.tinify.com/some/location",
+                         times: 1)
+      end
+
+      it 'is a :post request' do
+        stub_request(:post, "https://api.tinify.com/some/location")
+          .with(basic_auth: ['api', 'valid'],
+                body: '{"preserve":["copyright","location"]}')
+          .to_return(status: 200, body: "copyrighted file")
+
+        Tinify::Source.from_buffer("png file")
+                      .preserve("copyright", "location")
+                      .result
+
+        assert_requested(:post, "https://api.tinify.com/some/location",
+                         times: 1)
       end
     end
 
@@ -167,7 +194,7 @@ describe Tinify::Source do
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api.tinify.com/some/location")
+        stub_request(:post, "https://api.tinify.com/some/location")
           .with(
             basic_auth: ['api', 'valid'],
             body: '{"preserve":["copyright","location"]}')
@@ -192,7 +219,7 @@ describe Tinify::Source do
       end
 
       it "should include other options if set" do
-        stub_request(:get, "https://api.tinify.com/some/location")
+        stub_request(:post, "https://api.tinify.com/some/location")
           .with(
             basic_auth: ['api', 'valid'],
             body: '{"resize":{"width":400},"preserve":["copyright","location"]}')
@@ -214,7 +241,7 @@ describe Tinify::Source do
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api.tinify.com/some/location")
+        stub_request(:post, "https://api.tinify.com/some/location")
           .with(
             basic_auth: ['api', 'valid'],
             body: '{"resize":{"width":400}}')
@@ -241,7 +268,7 @@ describe Tinify::Source do
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api.tinify.com/some/location")
+        stub_request(:post, "https://api.tinify.com/some/location")
           .with(
             basic_auth: ['api', 'valid'],
             body: '{"convert":{"type":["image/webp"]}}')
@@ -268,7 +295,7 @@ describe Tinify::Source do
             headers: { Location: "https://api.tinify.com/some/location" },
             body: '{}')
 
-        stub_request(:get, "https://api.tinify.com/some/location")
+        stub_request(:post, "https://api.tinify.com/some/location")
           .with(
             basic_auth: ['api', 'valid'],
             body: '{"transform":{"color":"black"}}')
@@ -286,11 +313,9 @@ describe Tinify::Source do
       end
 
       it "should include other options if set" do
-
-        stub_request(:get, "https://api.tinify.com/some/location").
-        with(:body => '{"convert":{"type":["image/webp"]},"transform":{"color":"black"}}',
-            ).
-        to_return(:status => 200, :body => "trans-formed-and-coded", :headers => {})
+        stub_request(:post, "https://api.tinify.com/some/location")
+          .with(:body => '{"convert":{"type":["image/webp"]},"transform":{"color":"black"}}')
+          .to_return(:status => 200, :body => "trans-formed-and-coded", :headers => {})
 
         result = Tinify::Source.from_buffer("png file").convert(type: ["image/webp"]).transform(color: "black")
         assert_equal "trans-formed-and-coded", result.to_buffer

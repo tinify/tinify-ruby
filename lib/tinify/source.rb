@@ -43,7 +43,12 @@ module Tinify
     end
 
     def result
-      response = Tinify.client.request(:get, @url, @commands)
+      response = if @commands&.empty?
+                    Tinify.client.request(:get, @url)
+                  else
+                    Tinify.client.request(:post, @url, @commands)
+                  end
+
       Result.new(response.headers, response.body).freeze
     end
 
