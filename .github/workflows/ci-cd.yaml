@@ -1,6 +1,14 @@
 name: Ruby CI/CD
 
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 permissions: {}
 jobs:
@@ -42,7 +50,7 @@ jobs:
       run: bundle exec rake
 
   Integration_tests:
-    if: github.event_name == 'push'
+    if: github.repository == 'tinify/tinify-ruby'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     needs: Unit_tests
