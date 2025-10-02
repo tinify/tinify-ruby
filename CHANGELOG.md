@@ -1,3 +1,7 @@
+## 1.7.1
+* Update `rexml` because of `CVE-2025-58767`.
+* Fix source `:result` to use post when a body is given.
+
 ## 1.7.0
 
 * Added base64 gem to Gemfile
