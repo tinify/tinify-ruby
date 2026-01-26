@@ -1,3 +1,15 @@
+## 1.8.0
+
+* Update development dependencies.
+
+Extend runtime support for:
+
+* Ruby 4.0
+
+Remove runtime support for:
+
+* Ruby 3.1
+
 ## 1.7.1
 * Update `rexml` because of `CVE-2025-58767`.
 * Fix source `:result` to use post when a body is given.
