@@ -33,6 +33,27 @@ Tinify.key = "YOUR_API_KEY"
 Tinify.from_file("unoptimized.png").to_file("optimized.png")
 ```
 
+Convert to another format with the `Tinify::Format` constants (`WEBP`, `PNG`,
+`JPEG`, `JPG`, `AVIF`, `JXL` and `ANY`):
+
+```ruby
+Tinify.from_file("unoptimized.png")
+  .convert(type: Tinify::Format::JXL)
+  .to_file("optimized.jxl")
+```
+
+Pass several and the API returns the smallest result:
+
+```ruby
+result = Tinify.from_file("unoptimized.png")
+  .convert(type: [Tinify::Format::JXL, Tinify::Format::WEBP])
+  .result
+
+result.to_file("optimized.#{result.extension}")
+```
+
+The constants are plain strings, so `type: "image/jxl"` keeps working.
+
 ## Running tests
 
 ```
