@@ -1,3 +1,7 @@
+## 1.9.0
+
+* Added `Tinify::Format` constants for the media types `convert` accepts, including JPEG XL (`image/jxl`).
+
 ## 1.8.0
 
 * Update development dependencies.

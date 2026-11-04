@@ -1,5 +1,6 @@
 require "tinify/version"
 require "tinify/error"
+require "tinify/format"
 
 require "tinify/client"
 require "tinify/result_meta"
